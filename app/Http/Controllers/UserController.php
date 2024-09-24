@@ -40,7 +40,7 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('users.index')
-                         ->with('success', 'User created successfully.');
+                         ->with('Success', 'User created successfully.');
     }
 
     public function show(User $user)
@@ -60,7 +60,7 @@ class UserController extends Controller
             'email' => $request->email,
         ]);
         return redirect()->route('users.index')
-                         ->with('success', 'User updated successfully.');
+                         ->with('Success', 'User updated successfully.');
     }
 
     public function destroy(User $user)
@@ -68,6 +68,6 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('users.index')
-                         ->with('success', 'User deleted successfully.');
+                         ->with('Success', 'User deleted successfully.');
     }
 }

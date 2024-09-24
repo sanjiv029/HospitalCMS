@@ -22,6 +22,7 @@ Route::prefix('admin')->middleware('auth')->group(function(){
     Route::resource('user', UserController::class)->names('users');
     Route::resource('department', DepartmentController::class)->names('departments');
     Route::resource('doctor', DoctorController::class)->names('doctors');
-
 });
+
+Route::get('/departments/{id}/doctors', [DoctorController::class, 'getDoctorsByDepartment'])->name('departments.doctors.index');
 

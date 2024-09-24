@@ -22,16 +22,21 @@ class DepartmentsDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('action', function($data){
+        ->addColumn('doctor_count', function ($department) {
+            return '<a href="' . route('departments.doctors.index', $department->id) . '">' .
+                   $department->doctor()->count() .
+                   '</a>'; 
+            })
+            ->addColumn('action', function($data) {
                 $url = '/admin/department/';
                 $buttons['view'] = true;
                 $buttons['edit'] = true;
                 $buttons['delete'] = true;
 
-                return view('components.action-button', compact('buttons' , 'url' , 'data'))->render();
+                return view('components.action-button', compact('buttons', 'url', 'data'))->render();
             })
-
-            ->setRowId('id');
+            ->setRowId('id')
+            ->rawColumns(['doctor_count','action']);
     }
 
     /**
@@ -39,7 +44,7 @@ class DepartmentsDataTable extends DataTable
      */
     public function query(Department $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->with('doctor');
     }
 
     /**
@@ -54,12 +59,11 @@ class DepartmentsDataTable extends DataTable
                     //->dom('Bfrtip')
                     ->orderBy(1)
                     ->selectStyleSingle()
+                    ->parameters([
+                        'scrollX' => true,  // Enables horizontal scrolling
+                    ])
                     ->buttons([
-                        Button::make('excel'),
-                        Button::make('csv'),
-                        Button::make('pdf'),
-                        Button::make('print'),
-                        Button::make('reset'),
+
                         Button::make('reload')
                     ]);
     }
@@ -70,8 +74,12 @@ class DepartmentsDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('name'),
-            Column::make('code'),
+            Column::make('name')
+            ->width(300),
+            Column::make('code')
+            ->width(300),
+            Column::make('doctor_count')->title('Number of Doctors')
+            ->width(200),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)

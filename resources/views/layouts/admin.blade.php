@@ -15,6 +15,7 @@
 
 @push('css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 @endpush
 
 @push('js')
@@ -79,21 +80,6 @@
     @yield('content_body')
 @stop
 
-{{-- Create a common footer --}}
-
-@section('footer')
-    <div class="float-right">
-        Version: {{ config('app.version', '1.0.0') }}
-    </div>
-
-    {{-- <strong>
-        <a href="{{ config('app.company_url', '#') }}">
-            {{ config('app.company_name', 'My company') }}
-        </a>
-    </strong> --}}
-@stop
-
-{{-- Add common Javascript/Jquery code --}}
 
 @push('js')
     {{--    TODO Replace with local or npm version --}}
@@ -104,8 +90,6 @@
         });
     </script>
 @endpush
-
-{{-- Add common CSS customizations --}}
 
 @push('css')
     <style>

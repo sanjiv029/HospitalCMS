@@ -3,7 +3,6 @@
 
 @section('content')
 <div class="container">
-    <h3>Welcome to Dashboard</h3>
-
+    <h3>Welcome to Admin Dashboard</h3>
 </div>
 @endsection

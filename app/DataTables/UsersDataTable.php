@@ -54,12 +54,15 @@ class UsersDataTable extends DataTable
                     //->dom('Bfrtip')
                     ->orderBy(1)
                     ->selectStyleSingle()
+                    ->parameters([
+                        'scrollX' => true,  // Enables horizontal scrolling
+                    ])
                     ->buttons([
-                        Button::make('excel'),
+                       /*  Button::make('excel'),
                         Button::make('csv'),
                         Button::make('pdf'),
-                        Button::make('print'),
-                        Button::make('reset'),
+                        Button::make('print'), */
+                      /*   Button::make('reset'), */
                         Button::make('reload')
                     ]);
     }
@@ -70,14 +73,18 @@ class UsersDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-                  Column::make('name'),
-                  Column::make('email'),
-                  Column::make('created_at'),
-                  Column::make('updated_at'),
+                  Column::make('name')
+                    ->width(300),
+                  Column::make('email')
+                    ->width(300),
+                  Column::make('created_at')
+                  ->width(300),
+                  Column::make('updated_at')
+                  ->width(300),
                   Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
-                  ->width(150)
+                  ->width(220)
                   ->addClass('text-center'),
         ];
     }

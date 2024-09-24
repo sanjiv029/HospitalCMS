@@ -22,6 +22,12 @@ class DoctorsDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+                    ->editColumn('date_of_birth_ad', function($doctor) {
+                        return \Carbon\Carbon::parse($doctor->date_of_birth_ad)->format('Y-m-d'); // Format A.D. date
+                    })
+                    ->addColumn('department_name', function ($doctor) {
+                        return $doctor->department ? $doctor->department->name : 'N/A'; // Get department name
+                    })
             ->addColumn('action', function($data){
                 $url = '/admin/doctor/';
                 $buttons['view'] = true;
@@ -38,7 +44,7 @@ class DoctorsDataTable extends DataTable
      */
     public function query(Doctor $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model->newQuery()->with('department');
     }
 
     /**
@@ -50,17 +56,14 @@ class DoctorsDataTable extends DataTable
                     ->setTableId('doctors-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    //->dom('Bfrtip')
                     ->orderBy(1)
                     ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('excel'),
-                        Button::make('csv'),
-                        Button::make('pdf'),
-                        Button::make('print'),
-                        Button::make('reset'),
+                    ->parameters([
+                        'scrollX' => true,  // Enables horizontal scrolling
+                    ])
+                  ->buttons([
                         Button::make('reload')
-                    ]);
+                    ]) ;
     }
 
     /**
@@ -69,21 +72,25 @@ class DoctorsDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::make('name'),
-            Column::make('department_id')
-                ->width(80),
-            Column::make('email'),
-            Column::make('phone'),
-            COlumn::make('address'),
-            Column::make('date_of_birth')
-            ->width(80),
+            Column::make('name')
+            ->width(200),
+            Column::make('department_name')
+            ->title('Department')  // Change the title to "Department"
+            ->width(150),
+            Column::make('email')
+                ->width(300),
+            Column::make('phone')
+                ->width(150),
+            Column::make('date_of_birth_ad')
+                ->title('Date of Birth (A.D)')
+                ->width(200),
             Column::make('status')
-                ->width(50),
+                ->width(100),
             Column::computed('action')
-            ->exportable(false)
-            ->printable(false)
-            ->width(0)
-            ->addClass('text-center'),
+                ->exportable(false)
+                ->printable(false)
+                ->width(200)
+                ->addClass('text-center'),
         ];
     }
 

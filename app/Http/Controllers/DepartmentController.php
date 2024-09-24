@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\DataTables\DepartmentsDataTable;
 use App\Http\Requests\DepartmentRequest;
 use Illuminate\Http\Request;
-
+use App\Models\Doctor;
 use App\Models\Department;
 
 class DepartmentController extends Controller
@@ -16,11 +16,9 @@ class DepartmentController extends Controller
         public function index(DepartmentsDataTable $dataTable)
         {
 
-                return $dataTable->render('common.index',
-        [
-            'resourceName'=>'Departments',
-            'resourceRoute'=>'departments',
-
+            return $dataTable->render('common.index',[
+                'resourceName'=>'Departments',
+                'resourceRoute'=>'departments',
             ]);
         }
 
@@ -38,7 +36,7 @@ class DepartmentController extends Controller
         Department::create($request->all());
 
         return redirect()->route('departments.index')
-                         ->with('success', 'Department created successfully.');
+                         ->with('Success', 'Department created successfully.');
     }
 
     public function show(Department $department)
@@ -57,7 +55,7 @@ class DepartmentController extends Controller
         $department->update($request->all());
 
         return redirect()->route('departments.index')
-                         ->with('success', 'Department updated successfully.');
+                         ->with('Success', 'Department updated successfully.');
     }
 
     public function destroy(Department $department)
@@ -65,6 +63,6 @@ class DepartmentController extends Controller
         $department->delete();
 
         return redirect()->route('departments.index')
-                         ->with('success', 'Department deleted successfully.');
+                         ->with('Success', 'Department deleted successfully.');
     }
 }

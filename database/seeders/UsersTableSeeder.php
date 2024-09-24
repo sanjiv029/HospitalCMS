@@ -16,13 +16,21 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         // Insert an admin user
-       /*  User::create([
+/*         User::create([
             'name' => 'Admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('password'), // Use bcrypt or Hash::make to hash the password
-            'role' => 'admin', // Ensure the role column exists
+            'usertype' => 'admin', // Set usertype for the admin user
+        ]);
+
+        // Insert a default user
+        User::create([
+            'name' => 'Default User',
+            'email' => 'user@user.com',
+            'password' => Hash::make('password'), // Use bcrypt or Hash::make to hash the password
+            'usertype' => 'user', // Set usertype for a regular user
         ]);
  */
-        // Optionally, you can create other users or data here
+        // You can add more users or data here as needed
     }
 }

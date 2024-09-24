@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use App\DataTables\DoctorsDataTable;
+use Yajra\DataTables\EloquentDataTable;
+use Yajra\DataTables\Services\DataTable;
 use App\Http\Requests\DoctorRequest;
 use App\Models\Doctor;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\Department;
+use Illuminate\Http\Request;
+
 class DoctorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(DoctorsDataTable $dataTables)
+    public function index(DoctorsDataTable $dataTables, Request $request)
     {
         return $dataTables->render('common.index', [
             'resourceName'=>'Doctors',
@@ -26,7 +32,11 @@ class DoctorController extends Controller
     public function create()
     {
         $departments = Department::all();
-        return view ('doctors.form', compact('departments'));
+        $provinces = DB::table('provinces')->get();
+        $districts = DB::table('districts')->get();
+        $municipality_types=DB::table('municipality_types')->get();
+        $municipalities=DB::table('municipalities')->get();
+        return view ('doctors.form', compact('departments','provinces','districts','municipality_types','municipalities'));
     }
 
     /**
@@ -35,10 +45,14 @@ class DoctorController extends Controller
     public function store(DoctorRequest $request)
     {
         $data= $request->all();
-        if($request->hasFile('profile_image')) {
-            $data['profile_image'] = $request->file('profile_image')->store('profile_images'.'public');
-        }
-        Doctor::create($data);
+        $doctor =Doctor::create($data);
+        // Create a new user for login credentials
+        User::create([
+        'name' => $data['name'], // Assuming you have a name field
+        'email' => $data['email'], // Assuming you have an email field
+        'password' => Hash::make($data['password']), // Hash the password
+        'doctor_id' => $doctor->id, // Optional: link to the doctor
+         ]);
         return redirect()->route('doctors.index')->with('Success','Doctor created Successfully.');
     }
 
@@ -57,9 +71,15 @@ class DoctorController extends Controller
     public function edit(string $id)
     {
         $doctor = Doctor::findOrFail($id);
-        $departments=Department::all();
-        return view('doctors.form',compact('doctor','departments'));
+        $departments = Department::all();
+        $provinces = DB::table('provinces')->get();
+        $districts = DB::table('districts')->get();
+        $municipality_types=DB::table('municipality_types')->get();
+        $municipalities=DB::table('municipalities')->get();
+
+        return view('doctors.form', compact('doctor', 'departments', 'provinces', 'districts', 'municipality_types', 'municipalities'));
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -68,9 +88,6 @@ class DoctorController extends Controller
     {
         $doctor = Doctor::findOrFail($id);
         $data = $request->all();
-        if($request->hasFile('profile_image')){
-            $data['profile_image']=$request->file('profile_image')->store('profile_image','public');
-        }
         $doctor->update($data);
         return redirect()->route('doctors.index')->with('Success','Doctor Updated Successfully.');
     }
@@ -83,5 +100,10 @@ class DoctorController extends Controller
         $doctor->delete();
         return redirect()->route('doctors.index')->with('Success','Doctor details deleted successfully');
 
+    }
+
+    public function getDoctorsByDepartment($departmentID) {
+        $doctors = Doctor::where('department_id',$departmentID)->get();
+        return view('doctors.department_index', compact('doctors'));
     }
 }

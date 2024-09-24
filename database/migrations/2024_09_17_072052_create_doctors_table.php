@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('department_id')->constrained('departments')->onDelete('cascade');  // Foreign key with constraint
             $table->string('email')->unique();
             $table->string('phone')->unique();
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->date('date_of_birth');
             $table->string('profile_image')->nullable();
             $table->enum('status', ['active', 'inactive']);

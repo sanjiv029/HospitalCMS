@@ -15,9 +15,14 @@ class Doctor extends Model
     'email',
     'phone',
     'address',
-    'date_of_birth',
+    'date_of_birth_ad',
+    'date_of_birth_bs',
     'profile_image',
     'status',
+    'province_id',
+    'district_id',
+    'municipality_type_id',
+    'municipality_id',
     ];
 
 
@@ -25,7 +30,7 @@ class Doctor extends Model
         return $this->belongsTo(Department::class);
     }
 
-   /*  public function province() {
+   public function province() {
         return $this->belongsTo(Province::class);
     }
     public function district(){
@@ -33,16 +38,18 @@ class Doctor extends Model
     }
     public function municipality() {
         return $this->belongsTo(Municipality::class);
-    } */
+    }
 
+    public function municipality_type() {
+        return $this->belongsTo(Municipality_type::class);
+    }
 
-
-    /* public function experience() {
+     public function experience() {
         return $this->hasMany(Experience::class);
     }
 
     public function education(){
         return $this->hasMany(Education::class);
-    } */
+    }
 }
 
