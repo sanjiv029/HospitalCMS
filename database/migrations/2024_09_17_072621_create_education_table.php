@@ -16,11 +16,12 @@ return new class extends Migration
             $table->foreignId('doctor_id')->constrained('doctors');
             $table->string('degree');
             $table->string('institution');
+            $table->string('address');
             $table->string('field_of_study');
             $table->year('start_year');
             $table->year('end_year')->nullable();
-            $table->string('certification')->nullable();
-            $table->text('additional_details')->nullable();
+            $table->string('edu_certificates')->nullable();
+            $table->text('additional_information')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -16,11 +16,12 @@ class Education extends Model
         'doctor_id',
         'degree',
         'institution',
+        'address',
         'field_of_study',
         'start_year',
         'end_year',
-        'certification',
-        'additional_details',
+        'edu_certificates',
+        'additional_information',
     ];
 
 

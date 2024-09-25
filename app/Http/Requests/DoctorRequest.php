@@ -39,6 +39,10 @@ class DoctorRequest extends FormRequest
             'municipality_type_id' => 'required|exists:municipality_types,id',
             'municipality_id' => 'required|exists:municipalities,id',
             'date_of_birth_bs' => 'required|string',
+            'temporary_province_id' => 'required|exists:provinces,id',
+            'temporary_district_id' => 'required|exists:districts,id',
+            'temporary_municipality_type_id' => 'required|exists:municipality_types,id',
+            'temporary_municipality_id' => 'required|exists:municipalities,id',
         ];
     }
 

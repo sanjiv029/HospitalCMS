@@ -18,7 +18,7 @@ class Experience extends Model
         'type_of_employment',
         'start_date',
         'end_date',
-        'certification',
+        'exp_certificates',
         'additional_details',
     ];
 

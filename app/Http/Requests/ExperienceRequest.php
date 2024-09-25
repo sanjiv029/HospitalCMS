@@ -29,7 +29,7 @@ class ExperienceRequest extends FormRequest
             'type_of_employment' => 'required|string|max:255',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'certification' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048', // 2MB file limit
+            'exp_certificates' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048', // 2MB file limit
             'additional_details' => 'nullable|string',
         ];
     }
@@ -54,9 +54,9 @@ class ExperienceRequest extends FormRequest
             'start_date.date' => 'Start date must be a valid date.',
             'end_date.date' => 'End date must be a valid date.',
             'end_date.after_or_equal' => 'End date must be after or equal to the start date.',
-            'certification.file' => 'The uploaded certification must be a valid file.',
-            'certification.mimes' => 'The certification must be a file of type: pdf, jpg, jpeg, png.',
-            'certification.max' => 'The certification file size must not exceed 2MB.',
+            'exp_certificates.file' => 'The uploaded certification must be a valid file.',
+            'exp_certificates.mimes' => 'The certification must be a file of type: pdf, jpg, jpeg, png.',
+            'exp_certificates.max' => 'The certification file size must not exceed 2MB.',
             'additional_details.string' => 'Additional details must be a valid string.',
         ];
     }

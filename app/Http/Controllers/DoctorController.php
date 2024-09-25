@@ -104,6 +104,6 @@ class DoctorController extends Controller
 
     public function getDoctorsByDepartment($departmentID) {
         $doctors = Doctor::where('department_id',$departmentID)->get();
-        return view('doctors.department_index', compact('doctors'));
+        return view('departments.department-index', compact('doctors'));
     }
 }

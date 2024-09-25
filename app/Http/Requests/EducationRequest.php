@@ -25,11 +25,12 @@ class EducationRequest extends FormRequest
             'doctor_id' => 'required|exists:doctors,id',
             'degree' => 'required|string|max:255',
             'institution' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
             'field_of_study' => 'required|string|max:255',
             'start_year' => 'required|integer',
             'end_year' => 'nullable|integer',
-            'certification' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048', // 2MB file limit
-            'additional_details' => 'nullable|string',
+            'edu_certificates' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048', // 2MB file limit
+            'additional_information' => 'nullable|string',
         ];
     }
     public function messages(): array
@@ -46,10 +47,10 @@ class EducationRequest extends FormRequest
             'start_year.required' => 'Start year is required.',
             'start_year.integer' => 'Start year must be a valid number.',
             'end_year.integer' => 'End year must be a valid number.',
-            'certification.file' => 'The uploaded certification must be a valid file.',
-            'certification.mimes' => 'The certification must be a file of type: pdf, jpg, jpeg, png.',
-            'certification.max' => 'The certification file size must not exceed 2MB.',
-            'additional_details.string' => 'Additional details must be a valid string.',
+            'edu_certificates.file' => 'The uploaded certification must be a valid file.',
+            'edu_certificates.mimes' => 'The certification must be a file of type: pdf, jpg, jpeg, png.',
+            'edu_certificates.max' => 'The certification file size must not exceed 2MB.',
+            'additional_information.string' => 'Additional details must be a valid string.',
         ];
     }
 }

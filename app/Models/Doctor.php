@@ -23,6 +23,10 @@ class Doctor extends Model
     'district_id',
     'municipality_type_id',
     'municipality_id',
+    'temporary_province_id',
+    'temporary_district_id',
+    'temporary_municipality_type_id',
+    'temporary_municipality_id',
     ];
 
 

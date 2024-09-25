@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('type_of_employment');
             $table->date('start_date');
             $table->date('end_date')->nullable();
-            $table->string('certification')->nullable();
+            $table->string('exp_certificates')->nullable();
             $table->text('additional_details')->nullable();
             $table->softDeletes();
             $table->timestamps();
