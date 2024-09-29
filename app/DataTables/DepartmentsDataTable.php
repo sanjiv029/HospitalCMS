@@ -25,7 +25,7 @@ class DepartmentsDataTable extends DataTable
         ->addColumn('doctor_count', function ($department) {
             return '<a href="' . route('departments.doctors.index', $department->id) . '">' .
                    $department->doctor()->count() .
-                   '</a>'; 
+                   '</a>';
             })
             ->addColumn('action', function($data) {
                 $url = '/admin/department/';
@@ -56,11 +56,13 @@ class DepartmentsDataTable extends DataTable
                     ->setTableId('departments-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    //->dom('Bfrtip')
                     ->orderBy(1)
                     ->selectStyleSingle()
+                    ->responsive(true) 
                     ->parameters([
-                        'scrollX' => true,  // Enables horizontal scrolling
+                        'responsive' => true,
+                        'autoWidth' => true,
+                        'scrollX' => true,
                     ])
                     ->buttons([
 
@@ -79,11 +81,11 @@ class DepartmentsDataTable extends DataTable
             Column::make('code')
             ->width(300),
             Column::make('doctor_count')->title('Number of Doctors')
-            ->width(200),
+            ->width(300),
             Column::computed('action')
                   ->exportable(false)
                   ->printable(false)
-                  ->width(200)
+                  ->width(300)
                   ->addClass('text-center'),
         ];
     }

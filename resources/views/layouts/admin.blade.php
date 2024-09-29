@@ -1,7 +1,5 @@
 @extends('adminlte::page')
 
-
-
 @section('title')
     {{ config('adminlte.title') }}
     @hasSection('subtitle')
@@ -12,6 +10,8 @@
 @push('css')
     @vite('resources/css/app.css')
     @vite('resources/sass/style.scss')
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="http://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/css/nepali.datepicker.v4.0.4.min.css"
     rel="stylesheet" type="text/css"/>

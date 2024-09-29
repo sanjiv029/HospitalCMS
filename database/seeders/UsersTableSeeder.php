@@ -16,7 +16,7 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         // Insert an admin user
-/*         User::create([
+        User::create([
             'name' => 'Admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('password'), // Use bcrypt or Hash::make to hash the password
@@ -30,7 +30,7 @@ class UsersTableSeeder extends Seeder
             'password' => Hash::make('password'), // Use bcrypt or Hash::make to hash the password
             'usertype' => 'user', // Set usertype for a regular user
         ]);
- */
+
         // You can add more users or data here as needed
     }
 }

@@ -22,6 +22,8 @@ class Education extends Model
         'end_year',
         'edu_certificates',
         'additional_information',
+        'start_year_bs',
+        'end_year_bs',
     ];
 
 

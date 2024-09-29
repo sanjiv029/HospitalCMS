@@ -24,6 +24,7 @@ class UserRequest extends FormRequest
         $userId = $this->route('user') ? $this->route('user')->id : null;
 
         return [
+            'doctor_id' => 'nullable|exists:doctors,id', // Make nullable if applicable
             'name' => 'required|string|max:255',
             'email' => [
                 'required',
@@ -33,18 +34,28 @@ class UserRequest extends FormRequest
                 'unique:users,email,' . $userId,
                 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'
             ],
-            'password' => $this->isMethod('post') ? 'required|min:8' : 'nullable|min:8',
+            'password' => $this->isMethod('post') ? 'required|min:8|confirmed' : 'nullable|min:8',
         ];
     }
 
-    public function messages()
+    /**
+     * Custom error messages for validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
     {
         return [
+            'doctor_id.exists' => 'The selected doctor does not exist.',
             'name.required' => 'The name field is required.',
             'email.required' => 'The email field is required.',
             'email.unique' => 'This email has already been taken.',
             'email.regex' => 'The email format is invalid.',
             'password.required' => 'The password field is required.',
+            'password.confirmed' => 'The password confirmation does not match.',
+            'password.min' => 'The password must be at least 8 characters.',
         ];
     }
 }
+
+/* https://chatgpt.com/share/66f54e89-d524-8006-9584-710aa99ec8da */

@@ -20,6 +20,8 @@ class Experience extends Model
         'end_date',
         'exp_certificates',
         'additional_details',
+        'start_date_bs',
+        'end_date_bs',
     ];
 
 

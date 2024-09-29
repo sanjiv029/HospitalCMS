@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('education', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('doctor_id')->constrained('doctors');
+            $table->foreignId('doctor_id')
+                    ->constrained('doctors')
+                    ->onDelete('cascade');
             $table->string('degree');
             $table->string('institution');
             $table->string('address');

@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'doctor_id',
     ];
 
     /**
@@ -44,4 +45,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+        public function doctor()
+    {
+        return $this->belongsTo(Doctor::class);
+    }
+
 }
+
+

@@ -28,6 +28,9 @@ class DoctorsDataTable extends DataTable
                     ->addColumn('department_name', function ($doctor) {
                         return $doctor->department ? $doctor->department->name : 'N/A'; // Get department name
                     })
+                    ->addColumn('user_id', function ($doctor) {
+                        return $doctor->user ? $doctor->user->id : 'N/A';
+                    })
             ->addColumn('action', function($data){
                 $url = '/admin/doctor/';
                 $buttons['view'] = true;
@@ -58,8 +61,11 @@ class DoctorsDataTable extends DataTable
                     ->minifiedAjax()
                     ->orderBy(1)
                     ->selectStyleSingle()
+                    ->responsive(true) 
                     ->parameters([
-                        'scrollX' => true,  // Enables horizontal scrolling
+                        'responsive' => true,
+                        'autoWidth' => true,
+                        'scrollX' => true,
                     ])
                   ->buttons([
                         Button::make('reload')
@@ -72,24 +78,27 @@ class DoctorsDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            Column::make('id')
+                ->width(50),
             Column::make('name')
-            ->width(200),
-            Column::make('department_name')
-            ->title('Department')  // Change the title to "Department"
             ->width(150),
+            Column::make('department_name')
+            ->title('Department'),
             Column::make('email')
-                ->width(300),
+            ->width(200),
+            COlumn::make('user_id')
+            ->width(100),
             Column::make('phone')
-                ->width(150),
+            ->width(100),
             Column::make('date_of_birth_ad')
                 ->title('Date of Birth (A.D)')
-                ->width(200),
+                ->width(150),
             Column::make('status')
-                ->width(100),
+            ->width(150),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(200)
+                ->width(250)
                 ->addClass('text-center'),
         ];
     }

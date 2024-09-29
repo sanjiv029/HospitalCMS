@@ -22,11 +22,15 @@ class UsersDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('doctor_id', function ($user) {
+                return $user->doctor ? $user->doctor->id : 'N/A';
+            })
             ->addColumn('action', function($data){
                 $url = '/admin/user/';
                 $buttons['view'] = true;
                 $buttons['edit'] = true;
                 $buttons['delete'] = true;
+
 
                 return view('components.action-button', compact('buttons' , 'url' , 'data'))->render();
             })
@@ -51,18 +55,15 @@ class UsersDataTable extends DataTable
                     ->setTableId('users-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    //->dom('Bfrtip')
                     ->orderBy(1)
                     ->selectStyleSingle()
+                    ->responsive(true)
                     ->parameters([
-                        'scrollX' => true,  // Enables horizontal scrolling
+                        'responsive' => true,
+                        'autoWidth' => true,
+                        'scrollX' => true,
                     ])
                     ->buttons([
-                       /*  Button::make('excel'),
-                        Button::make('csv'),
-                        Button::make('pdf'),
-                        Button::make('print'), */
-                      /*   Button::make('reset'), */
                         Button::make('reload')
                     ]);
     }
@@ -73,14 +74,18 @@ class UsersDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+                Column::make('id')
+                ->width(50),
                   Column::make('name')
-                    ->width(300),
+                    ->width(200),
                   Column::make('email')
                     ->width(300),
+                    Column::make('doctor_id')
+                    ->width(100),
                   Column::make('created_at')
-                  ->width(300),
+                  ->width(200),
                   Column::make('updated_at')
-                  ->width(300),
+                  ->width(250),
                   Column::computed('action')
                   ->exportable(false)
                   ->printable(false)

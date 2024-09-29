@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('experiences', function (Blueprint $table) {
             $table->id();  // Primary Key
-            $table->foreignId('doctor_id')->constrained('doctors');  // Foreign Key to doctors table
+            $table->foreignId('doctor_id')
+                      ->constrained('doctors')
+                      ->onDelete('cascade');  
             $table->string('job_title');
             $table->string('healthcare_facilities');
             $table->string('location');

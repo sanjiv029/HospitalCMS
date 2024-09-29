@@ -47,6 +47,25 @@ class Doctor extends Model
     public function municipality_type() {
         return $this->belongsTo(Municipality_type::class);
     }
+        public function temporaryProvince()
+    {
+        return $this->belongsTo(Province::class, 'temporary_province_id');
+    }
+
+    public function temporaryDistrict()
+    {
+        return $this->belongsTo(District::class, 'temporary_district_id');
+    }
+
+    public function temporaryMunicipality()
+    {
+        return $this->belongsTo(Municipality::class, 'temporary_municipality_id');
+    }
+    public function temporaryMunicipalityType()
+    {
+        return $this->belongsTo(Municipality::class, 'temporary_municipality_type_id');
+    }
+
 
      public function experience() {
         return $this->hasMany(Experience::class);
@@ -54,6 +73,10 @@ class Doctor extends Model
 
     public function education(){
         return $this->hasMany(Education::class);
+    }
+        public function user()
+    {
+        return $this->hasOne(User::class);
     }
 }
 
