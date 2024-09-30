@@ -17,6 +17,8 @@ class Doctor extends Model
     'address',
     'date_of_birth_ad',
     'date_of_birth_bs',
+    'gender',
+    'marital_status',
     'profile_image',
     'status',
     'province_id',

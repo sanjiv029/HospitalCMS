@@ -58,4 +58,3 @@ class UserRequest extends FormRequest
     }
 }
 
-/* https://chatgpt.com/share/66f54e89-d524-8006-9584-710aa99ec8da */

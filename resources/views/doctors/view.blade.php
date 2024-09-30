@@ -41,6 +41,14 @@
                                 <label for="phone">Phone Number:</label>
                                 <p>{{ $doctor->phone }}</p>
                             </div>
+                            <div class="form-group">
+                                <label for="gender">Gender:</label>
+                                <p>{{ $doctor->gender }}</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="marital_status">Marital Status:</label>
+                                <p>{{ $doctor->marital_status }}</p>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">

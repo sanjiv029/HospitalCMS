@@ -19,9 +19,6 @@ use Carbon\Carbon;
 
 class DoctorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(DoctorsDataTable $dataTables)
     {
         return $dataTables->render('common.index', [
@@ -30,40 +27,29 @@ class DoctorController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        // Use eager loading for related models to improve performance
         $departments = Department::all();
         $provinces = DB::table('provinces')->get();
         $districts = DB::table('districts')->get();
         $municipality_types = DB::table('municipality_types')->get();
         $municipalities = DB::table('municipalities')->get();
 
-        // Pass empty collections for educations and experiences
         $educations = collect([new Education()]);
         $experiences = collect([new Experience()]);
 
         return view('doctors.form', compact('departments', 'provinces', 'districts', 'municipality_types', 'municipalities', 'educations', 'experiences'));
     }
 
-    /**
-     * Store a new doctor along with education, experience, and user credentials.
-     */
     public function store(DoctorRequest $doctorRequest, EducationRequest $educationRequest, ExperienceRequest $experienceRequest)
     {
         DB::beginTransaction();
         try {
-            // Create doctor
             $doctor = Doctor::create($doctorRequest->validated());
 
-            // Store associated education and experience
             $this->storeEducation($educationRequest, $doctor->id);
             $this->storeExperience($experienceRequest, $doctor->id);
 
-            // Create user for doctor
             $user = User::create([
                 'name' => $doctorRequest->input('name'),
                 'email' => $doctorRequest->input('email'),
@@ -86,36 +72,24 @@ class DoctorController extends Controller
         }
     }
 
-    /**
-     * Display the doctor details.
-     */
     public function show(string $id)
     {
         $doctor = Doctor::with(['education', 'experience'])->findOrFail($id);
         return view('doctors.view', compact('doctor'));
     }
 
-    /**
-     * Store education data in a batch.
-     */
     private function storeEducation(EducationRequest $request, $doctorId): void
     {
         $educationData = $this->prepareEducationData($request, $doctorId);
-        Education::insert($educationData);  // Insert in batch
+        Education::insert($educationData);
     }
 
-    /**
-     * Store experience data in a batch.
-     */
     private function storeExperience(ExperienceRequest $request, $doctorId): void
     {
         $experienceData = $this->prepareExperienceData($request, $doctorId);
-        Experience::insert($experienceData);  // Insert in batch
+        Experience::insert($experienceData);
     }
 
-    /**
-     * Prepare education data for batch insertion.
-     */
     private function prepareEducationData(EducationRequest $request, $doctorId)
     {
         $educationData = [];
@@ -124,6 +98,7 @@ class DoctorController extends Controller
         $endYears = $request->input('end_year', []);
         $startYearsBS = $request->input('start_year_bs',[]);
         $endYearsBS = $request->input('end_year_bs',[]);
+
         foreach ($degrees as $index => $degree) {
             $educationData[] = [
                 'doctor_id' => $doctorId,
@@ -135,7 +110,7 @@ class DoctorController extends Controller
                 'end_year' => $endYears[$index] ?? null,
                 'start_year_bs' => $startYearsBS[$index] ?? null,
                 'end_year_bs' => $endYearsBS[$index] ?? null,
-                'edu_certificates' => $request->input('edu_certificates')[$index] ?? null,
+                'edu_certificates' => $request->hasFile('edu_certificates.' . $index) ? $request->file('edu_certificates.' . $index)->store('certificates') : null,
                 'additional_information' => $request->input('additional_information')[$index] ?? null,
             ];
         }
@@ -143,9 +118,6 @@ class DoctorController extends Controller
         return $educationData;
     }
 
-    /**
-     * Prepare experience data for batch insertion.
-     */
     private function prepareExperienceData(ExperienceRequest $request, $doctorId)
     {
         $experienceData = [];
@@ -166,7 +138,7 @@ class DoctorController extends Controller
                 'end_date' => $endDates[$index] ?? null,
                 'start_date_bs' => $startDatesBS[$index] ?? null,
                 'end_date_bs' => $endDatesBS[$index] ?? null,
-                'exp_certificates' => $request->input('exp_certificates')[$index] ?? null,
+                'exp_certificates' => $request->hasFile('exp_certificates.' . $index) ? $request->file('exp_certificates.' . $index)->store('certificates') : null,
                 'additional_details' => $request->input('additional_details')[$index] ?? null,
             ];
         }
@@ -174,9 +146,6 @@ class DoctorController extends Controller
         return $experienceData;
     }
 
-    /**
-     * Edit doctor and associated records.
-     */
     public function edit($id)
     {
         $doctor = Doctor::with(['education', 'experience'])->findOrFail($id);
@@ -190,18 +159,13 @@ class DoctorController extends Controller
         return view('doctors.form', compact('doctor', 'departments', 'provinces', 'districts', 'municipality_types', 'municipalities'));
     }
 
-    /**
-     * Update doctor, user, education, and experience records.
-     */
     public function update(DoctorRequest $doctorRequest, EducationRequest $educationRequest, ExperienceRequest $experienceRequest, $id)
     {
         DB::beginTransaction();
         try {
-            // Update doctor details
             $doctor = Doctor::findOrFail($id);
             $doctor->update($doctorRequest->validated());
 
-            // Update user
             $user = User::where('doctor_id', $doctor->id)->first();
             if ($user) {
                 $user->update([
@@ -210,22 +174,23 @@ class DoctorController extends Controller
                 ]);
             }
 
-            // Update related education and experience records
+            // Update education and experience
+            Education::where('doctor_id', $doctor->id)->delete();
+            Experience::where('doctor_id', $doctor->id)->delete();
+
             $this->updateEducation($educationRequest, $doctor->id);
             $this->updateExperience($experienceRequest, $doctor->id);
 
             DB::commit();
             return redirect()->route('doctors.index')->with('success', 'Doctor updated successfully.');
+
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Error updating doctor: ' . $e->getMessage());
-            return redirect()->route('doctors.index')->with('error', 'Error updating doctor.');
+            Log::error('Error updating doctor and user: ' . $e->getMessage());
+            return redirect()->route('doctors.index')->with('error', 'Error updating doctor and user.');
         }
     }
 
-    /**
-     * Update education details.
-     */
     private function updateEducation(EducationRequest $request, $doctorId): void
     {
         // Bulk update or insert for education

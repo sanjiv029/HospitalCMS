@@ -31,6 +31,8 @@ class DoctorRequest extends FormRequest
             ],
             'password' => 'nullable|string|min:8|confirmed',
             'date_of_birth_ad' => 'nullable|date|before:today',
+            'gender' =>'nullable|in:male,female,other',
+            'marital_status'=>'nullable|in:single,married,divorced,widowed',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'status' => 'required|in:active,inactive',
             'province_id' => 'required|exists:provinces,id',

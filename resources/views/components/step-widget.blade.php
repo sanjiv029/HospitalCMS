@@ -63,15 +63,18 @@
         element.parentElement.appendChild(errorDiv);
         element.classList.add('is-invalid');
     }
-        function validateBasicInformation() {
-        const validations = [
-            { field: 'name', msg: 'Name is required.', func: (value) => value !== '' },
-            { field: 'phone', msg: 'A valid phone number is required.', func: (value) => /^(98|97|96)\d{8}$|^(01)\d{6,8}$/.test(value) },
-            { field: 'department_id', msg: 'Department is required.', func: (value) => value !== '' },
-            { field: 'date_of_birth_ad', msg: 'Date of Birth is required.', func: (value) => value !== '' && new Date(value) < new Date() }
-        ];
-        return validateFields(validations);
+    function validateBasicInformation() {
+    const validations = [
+        { field: 'name', msg: 'Name is required.', func: (value) => value !== '' },
+        { field: 'phone', msg: 'A valid phone number is required.', func: (value) => /^(98|97|96)\d{8}$|^(01)\d{6,8}$/.test(value) },
+        { field: 'department_id', msg: 'Department is required.', func: (value) => value !== '' },
+        { field: 'date_of_birth_ad', msg: 'Date of Birth is required.', func: (value) => value !== '' && new Date(value) < new Date() },
+        { field: 'gender', msg: 'Gender is required.', func: (value) => value !== '' },
+        { field: 'marital_status', msg: 'Marital status is required.', func: (value) => value !== '' }
+    ];
+    return validateFields(validations);
     }
+
 
     function validateAddressInformation() {
         const validations = [
@@ -98,8 +101,8 @@
                 { field: 'institution', msg: 'Institution field is required.', func: (value) => value !== '' },
                 { field: 'address', msg: 'Address is required.', func: (value) => value !== '' },
                 { field: 'field_of_study', msg: 'Field of study is required.', func: (value) => value !== '' },
-                { field: 'start_year', msg: 'Start year is required.', func: (value) => value !== '' },
-                { field: 'end_year', msg: 'End year must be after start year.', func: (value) => validateEndDateOrYear(`end_year`, `start_year`) },
+                { field: 'start_year_bs', msg: 'Start year is required.', func: (value) => value !== '' },
+                { field: 'end_year_bs', msg: 'End year must be after start year.', func: (value) => validateEndDateOrYear(`end_year`, `start_year`) },
                 { field: 'edu_certificates', msg: 'Invalid education certificate.', func: validateFile },
                 { field: 'additional_information', msg: 'Additional details must not exceed 255 characters.', func: (value) => value.length <= 255 }
             );
@@ -118,8 +121,8 @@
                 { field: 'healthcare_facilities', msg: 'Healthcare facility field is required.', func: (value) => value !== '' },
                 { field: 'location', msg: 'Location is required.', func: (value) => value !== '' },
                 { field: 'type_of_employment', msg: 'Employment type is required.', func: (value) => value !== '' },
-                { field: 'start_date', msg: 'Start date is required.', func: (value) => value !== '' },
-                { field: 'end_date', msg: 'End date must be after start date.', func: (value) => validateEndDateOrYear(`end_date`, `start_date`) },
+                { field: 'start_date_bs', msg: 'Start date is required.', func: (value) => value !== '' },
+                { field: 'end_date_bs', msg: 'End date must be after start date.', func: (value) => validateEndDateOrYear(`end_date`, `start_date`) },
                 { field: 'exp_certificates', msg: 'Invalid experience certificate.', func: validateFile },
                 { field: 'additional_details', msg: 'Job description is required.', func: (value) => value !== '' }
             );
