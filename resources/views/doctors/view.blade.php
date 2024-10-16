@@ -104,6 +104,14 @@
                             <label for="address">Address</label>
                             <p>{{ $education['address'] }}</p>
                         </div>
+                        <div class="form-group">
+                            <label for="edu_certificates">Education Certificates</label>
+                                <p>
+                                <a href="{{ Storage::url('/public/storage/Education certificates') }}" target="_blank">
+                                    View Certificate
+                                </a>
+                                 </p>
+                            </div>
                     @endforeach
                 @else
                     <p>No education information available.</p>
@@ -126,6 +134,14 @@
                         <div class="form-group">
                             <label for="location">Location</label>
                             <p>{{ $experience['location'] }}</p>
+                        </div>
+                        <div class="form-group">
+                        <label for="exp_certificates">Experience Certificates</label>
+                            <p>
+                            <a href="{{ Storage::url('/public/storage/Experience certificates') }}" target="_blank">
+                                View Certificate
+                            </a>
+                             </p>
                         </div>
                     @endforeach
                 @else

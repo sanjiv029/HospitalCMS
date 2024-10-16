@@ -15,7 +15,7 @@ use App\Http\Requests\DoctorRequest;
 use App\Http\Requests\EducationRequest;
 use App\Http\Requests\ExperienceRequest;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+
 
 class DoctorController extends Controller
 {
@@ -38,7 +38,8 @@ class DoctorController extends Controller
         $educations = collect([new Education()]);
         $experiences = collect([new Experience()]);
 
-        return view('doctors.form', compact('departments', 'provinces', 'districts', 'municipality_types', 'municipalities', 'educations', 'experiences'));
+        $doctor = null;
+        return view('doctors.form', compact('departments', 'provinces', 'districts', 'municipality_types', 'municipalities', 'educations', 'experiences', 'doctor'));
     }
 
     public function store(DoctorRequest $doctorRequest, EducationRequest $educationRequest, ExperienceRequest $experienceRequest)
@@ -68,7 +69,7 @@ class DoctorController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error creating doctor and user: ' . $e->getMessage());
-            return redirect()->route('doctors.index')->with('error', 'Error creating doctor and user.');
+            return redirect()->route('doctors.index')->with('error', 'Error creating doctor and user.')->withInput();
         }
     }
 
@@ -100,6 +101,14 @@ class DoctorController extends Controller
         $endYearsBS = $request->input('end_year_bs',[]);
 
         foreach ($degrees as $index => $degree) {
+            $certificates = [];
+            if ($request->hasFile('edu_certificates')) {
+                foreach ($request->file('edu_certificates') as $file) {
+                    $path = $file->store('Education certificates');
+                    $certificates[] = $path;
+                }
+            }
+
             $educationData[] = [
                 'doctor_id' => $doctorId,
                 'degree' => $degree,
@@ -107,10 +116,10 @@ class DoctorController extends Controller
                 'address' => $request->input('address')[$index] ?? null,
                 'field_of_study' => $request->input('field_of_study')[$index] ?? null,
                 'start_year' => $startYears[$index] ?? null,
-                'end_year' => $endYears[$index] ?? null,
+                'end_year' =>!empty($endYears[$index]) ? $endYears[$index] : null,
                 'start_year_bs' => $startYearsBS[$index] ?? null,
                 'end_year_bs' => $endYearsBS[$index] ?? null,
-                'edu_certificates' => $request->hasFile('edu_certificates.' . $index) ? $request->file('edu_certificates.' . $index)->store('certificates') : null,
+                'edu_certificates' => !empty($certificates) ? json_encode($certificates) : json_encode([]),
                 'additional_information' => $request->input('additional_information')[$index] ?? null,
             ];
         }
@@ -127,18 +136,27 @@ class DoctorController extends Controller
         $startDatesBS= $request->input('start_date_bs',[]);
         $endDatesBS= $request->input('end_date_bs',[]);
 
+
         foreach ($employmentTypes as $index => $type) {
+            $certificates = [];
+            if ($request->hasFile('exp_certificates')) {
+                foreach ($request->file('exp_certificates') as $file) {
+                    $path = $file->store('Experience certificates' );
+                    $certificates[] = $path;
+                }
+            }
+
             $experienceData[] = [
                 'doctor_id' => $doctorId,
                 'type_of_employment' => $type,
                 'job_title' => $request->input('job_title')[$index] ?? null,
                 'healthcare_facilities' => $request->input('healthcare_facilities')[$index] ?? null,
                 'location' => $request->input('location')[$index] ?? null,
-                'start_date' => $startDates[$index] ?? null,
-                'end_date' => $endDates[$index] ?? null,
+                'start_date' =>$startDates[$index] ?? null,
+                'end_date' => !empty($endDates[$index]) ? $endDates[$index] : null,
                 'start_date_bs' => $startDatesBS[$index] ?? null,
                 'end_date_bs' => $endDatesBS[$index] ?? null,
-                'exp_certificates' => $request->hasFile('exp_certificates.' . $index) ? $request->file('exp_certificates.' . $index)->store('certificates') : null,
+                'exp_certificates' => !empty($certificates) ? json_encode($certificates) : json_encode([]),
                 'additional_details' => $request->input('additional_details')[$index] ?? null,
             ];
         }
@@ -178,8 +196,8 @@ class DoctorController extends Controller
             Education::where('doctor_id', $doctor->id)->delete();
             Experience::where('doctor_id', $doctor->id)->delete();
 
-            $this->updateEducation($educationRequest, $doctor->id);
-            $this->updateExperience($experienceRequest, $doctor->id);
+            $this->storeEducation($educationRequest, $doctor->id);
+            $this->storeExperience($experienceRequest, $doctor->id);
 
             DB::commit();
             return redirect()->route('doctors.index')->with('success', 'Doctor updated successfully.');
@@ -189,23 +207,6 @@ class DoctorController extends Controller
             Log::error('Error updating doctor and user: ' . $e->getMessage());
             return redirect()->route('doctors.index')->with('error', 'Error updating doctor and user.');
         }
-    }
-
-    private function updateEducation(EducationRequest $request, $doctorId): void
-    {
-        // Bulk update or insert for education
-        Education::where('doctor_id', $doctorId)->delete();
-        $this->storeEducation($request, $doctorId);
-    }
-
-    /**
-     * Update experience details.
-     */
-    private function updateExperience(ExperienceRequest $request, $doctorId): void
-    {
-        // Bulk update or insert for experience
-        Experience::where('doctor_id', $doctorId)->delete();
-        $this->storeExperience($request, $doctorId);
     }
 
     /**

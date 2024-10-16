@@ -30,7 +30,7 @@ class DoctorRequest extends FormRequest
                 'regex:/^(98|97|96)\d{8}$|^(01)\d{6,8}$/'
             ],
             'password' => 'nullable|string|min:8|confirmed',
-            'date_of_birth_ad' => 'nullable|date|before:today',
+            'date_of_birth_ad' => 'required|date|before:today',
             'gender' =>'nullable|in:male,female,other',
             'marital_status'=>'nullable|in:single,married,divorced,widowed',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',

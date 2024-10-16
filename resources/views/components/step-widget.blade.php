@@ -68,7 +68,8 @@
         { field: 'name', msg: 'Name is required.', func: (value) => value !== '' },
         { field: 'phone', msg: 'A valid phone number is required.', func: (value) => /^(98|97|96)\d{8}$|^(01)\d{6,8}$/.test(value) },
         { field: 'department_id', msg: 'Department is required.', func: (value) => value !== '' },
-        { field: 'date_of_birth_ad', msg: 'Date of Birth is required.', func: (value) => value !== '' && new Date(value) < new Date() },
+        { field: 'date_of_birth_ad', msg: 'Date of Birth (BS) is required.', func: (value) => value !== '' && new Date(value) < new Date() },
+        { field: 'date_of_birth_bs', msg: 'Date of Birth (BS) is required.', func: (value) => value !== '' },
         { field: 'gender', msg: 'Gender is required.', func: (value) => value !== '' },
         { field: 'marital_status', msg: 'Marital status is required.', func: (value) => value !== '' }
     ];
@@ -97,14 +98,16 @@
 
         for (let i = 0; i < educationCount; i++) {
             validations.push(
-                { field: 'degree', msg: 'Degree field is required.', func: (value) => value !== '' },
-                { field: 'institution', msg: 'Institution field is required.', func: (value) => value !== '' },
-                { field: 'address', msg: 'Address is required.', func: (value) => value !== '' },
-                { field: 'field_of_study', msg: 'Field of study is required.', func: (value) => value !== '' },
-                { field: 'start_year_bs', msg: 'Start year is required.', func: (value) => value !== '' },
-                { field: 'end_year_bs', msg: 'End year must be after start year.', func: (value) => validateEndDateOrYear(`end_year`, `start_year`) },
-                { field: 'edu_certificates', msg: 'Invalid education certificate.', func: validateFile },
-                { field: 'additional_information', msg: 'Additional details must not exceed 255 characters.', func: (value) => value.length <= 255 }
+                { field:`degree_${i}`, msg: 'Degree field is required.', func: (value) => value !== '' },
+                { field: `institution_${i}`, msg: 'Institution field is required.', func: (value) => value !== '' },
+                { field: `address_${i}`, msg: 'Address is required.', func: (value) => value !== '' },
+                { field: `field_of_study_${i}`, msg: 'Field of study is required.', func: (value) => value !== '' },
+                { field: `start_year_bs_${i}`, msg: 'Start year (BS) is required.', func: (value) => value !== '' },
+                { field: `start_year_ad_${i}`, msg: 'Start year (AD) is required.', func: (value) => value !== '' },
+                { field: `end_year_bs_${i}`, msg: 'End year (BS) must be after start year (BS).', func: (value) => validateEndDateOrYear(`end_year_bs_${i}`, `start_year_bs_${i}`) },
+                { field: `end_year_ad_${i}`, msg: 'End year must be after start year.', func: (value) => validateEndDateOrYear(`end_year_ad_${i}`, `start_year_ad_${i}`) },
+                { field: `edu_certificates_${i}`, msg: 'Invalid education certificate.', func: validateFile },
+                { field: `additional_information_${i}`, msg: 'Additional details must not exceed 255 characters.', func: (value) => value.length <= 255 }
             );
         }
 
@@ -117,14 +120,16 @@
 
         for (let i = 0; i < experienceCount; i++) {
             validations.push(
-                { field: 'job_title', msg: 'Job title is required.', func: (value) => value !== '' },
-                { field: 'healthcare_facilities', msg: 'Healthcare facility field is required.', func: (value) => value !== '' },
-                { field: 'location', msg: 'Location is required.', func: (value) => value !== '' },
-                { field: 'type_of_employment', msg: 'Employment type is required.', func: (value) => value !== '' },
-                { field: 'start_date_bs', msg: 'Start date is required.', func: (value) => value !== '' },
-                { field: 'end_date_bs', msg: 'End date must be after start date.', func: (value) => validateEndDateOrYear(`end_date`, `start_date`) },
-                { field: 'exp_certificates', msg: 'Invalid experience certificate.', func: validateFile },
-                { field: 'additional_details', msg: 'Job description is required.', func: (value) => value !== '' }
+                { field: `job_title_${i}`, msg: 'Job title is required.', func: (value) => value !== '' },
+                { field: `healthcare_facilities_${i}`, msg: 'Healthcare facility field is required.', func: (value) => value !== '' },
+                { field: `location_${i}`, msg: 'Location is required.', func: (value) => value !== '' },
+                { field: `type_of_employment_${i}`, msg: 'Employment type is required.', func: (value) => value !== '' },
+                { field: `start_date_bs_${i}`, msg: 'Start date (BS) is required.', func: (value) => value !== '' },
+                { field: `end_date_bs_${i}`, msg: 'End date (BS) must be after start date (BS).', func: (value) => validateEndDateOrYear(`end_date_bs_${i}`, `start_date_bs_${i}`) },
+                { field: `start_date_ad_${i}`, msg: 'Start date (AD) is required.', func: (value) => value !== '' },
+                { field: `end_date_ad_${i}`, msg: 'End date (AD) must be after start date (AD) .', func: (value) => validateEndDateOrYear(`end_date_ad_${i}`, `start_date_ad_${i}`) },
+                { field: `exp_certificates_${i}`, msg: 'Invalid experience certificate.', func: validateFile },
+                { field: `additional_details_${i}`, msg: 'Job description is required.', func: (value) => value !== '' }
             );
         }
 
@@ -175,7 +180,7 @@
             return true;
         }
         const file = fileInput.files[0];
-        const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+        const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png','image/jpg'];
         return allowedTypes.includes(file.type) && file.size <= 2048000;
     }
 
