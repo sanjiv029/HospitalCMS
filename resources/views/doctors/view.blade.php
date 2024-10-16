@@ -94,8 +94,10 @@
                         {{-- Education Details --}}
             <div class="tab-pane fade" id="education" role="tabpanel" aria-labelledby="education-tab">
                 <h5>Education Information</h5>
+                <div class="row">
                 @if(!empty($doctor->education)) {{-- Assuming education is a JSON column --}}
                     @foreach(json_decode($doctor->education, true) as $education)
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="degree">Degree:</label>
                             <p>{{ $education['degree'] }} from {{ $education['institution'] }} ({{ $education['start_year'] }} - {{ $education['end_year'] }})</p>
@@ -111,18 +113,22 @@
                                     View Certificate
                                 </a>
                                  </p>
-                            </div>
+                        </div>
+                    </div>
                     @endforeach
                 @else
                     <p>No education information available.</p>
                 @endif
+                </div>
             </div>
 
             {{-- Experience Details --}}
             <div class="tab-pane fade" id="experience" role="tabpanel" aria-labelledby="experience-tab">
                 <h5>Experience Information</h5>
+                <div class="row">
                 @if(!empty($doctor->experience)) {{-- Assuming experience is a JSON column --}}
                     @foreach(json_decode($doctor->experience, true) as $experience)
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="job_title">Job Title:</label>
                             <p>{{ $experience['job_title'] }} at {{ $experience['healthcare_facilities'] }} ({{ $experience['start_date'] }} - {{ $experience['end_date'] }})</p>
@@ -143,10 +149,12 @@
                             </a>
                              </p>
                         </div>
+                    </div>
                     @endforeach
                 @else
                     <p>No experience information available.</p>
                 @endif
+                </div>
             </div>
 
             <div class="mt-3">

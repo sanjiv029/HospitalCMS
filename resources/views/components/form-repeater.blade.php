@@ -83,8 +83,7 @@
                 experienceCount++;
             }
 
-            // Recheck visibility of remove buttons
-            checkRemoveButtonVisibility(type);
+            checkRemoveButtonVisibility(type); // Call this function to ensure remove button visibility
         }
 
         // Event listeners for adding new education and experience items
@@ -150,8 +149,12 @@
                 }
             });
         }
-    
+
+        // Call to check remove button visibility on page load
+        checkRemoveButtonVisibility('education');
+        checkRemoveButtonVisibility('experience');
+
         // Initialize the datepickers after the DOM has fully loaded
         initializeDatePickers();
     });
-    </script>
+</script>

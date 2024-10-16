@@ -433,7 +433,7 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="additional_details_{{ $key }}" class="text-secondary">Additional Details</label>
+                            <label for="additional_details_{{ $key }}" class="text-secondary">Job Description</label>
                             <textarea name="additional_details[]" id="additional_details_{{ $key }}" cols="5" rows="3" class="form-control @error('additional_details.' . $key) is-invalid @enderror">{{ old('additional_details.' . $key, $experience->additional_details ?? '') }}</textarea>
                             @error('additional_details.' . $key)
                             <span class="invalid-feedback">{{ $message }}</span>
