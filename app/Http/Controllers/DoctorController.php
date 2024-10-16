@@ -166,15 +166,16 @@ class DoctorController extends Controller
 
     public function edit($id)
     {
-        $doctor = Doctor::with(['education', 'experience'])->findOrFail($id);
-
+        $doctor = Doctor::findOrFail($id);
+        $educations = $doctor->education;
+        $experiences = $doctor->experience;
         $departments = Department::all();
         $provinces = DB::table('provinces')->get();
         $districts = DB::table('districts')->get();
         $municipality_types = DB::table('municipality_types')->get();
         $municipalities = DB::table('municipalities')->get();
 
-        return view('doctors.form', compact('doctor', 'departments', 'provinces', 'districts', 'municipality_types', 'municipalities'));
+        return view('doctors.form', compact('doctor', 'departments', 'provinces', 'districts', 'municipality_types', 'municipalities','educations', 'experiences'));
     }
 
     public function update(DoctorRequest $doctorRequest, EducationRequest $educationRequest, ExperienceRequest $experienceRequest, $id)

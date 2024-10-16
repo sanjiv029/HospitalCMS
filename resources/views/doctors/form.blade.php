@@ -245,24 +245,26 @@
                 <button type="button" class="btn btn-primary" onclick="nextStep(2)"><i class="bi bi-arrow-right"></i> Next</button>
             </div>
         </div>
-            <!-- Step 3: Education Details -->
+
+        <!-- Step 3: Education Details -->
         <div class="step" id="step3" style="display:none;">
             <h5 class="text-primary"><i class="fas fa-graduation-cap"></i> Education Details</h5>
             <div class="col-md-12" id="education-fields">
-                <div class="education-item row" id="education-item-0">
+                  @foreach ($educations as $key => $education)
+                <div class="education-item row" id="education-item-{{ $key }}">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="degree_0" class="text-secondary">Degree</label>
-                            <select name="degree[]" id="degree_0" class="form-control @error('degree') is-invalid @enderror" required>
-                            <option value="" disabled selected>Select Degree</option>
-                            <option value="MBBS" {{ old('degree.0', $doctor->education[0]->degree ?? '') == 'MBBS' ? 'selected' : '' }}>MBBS</option>
-                            <option value="MD" {{ old('degree.0', $doctor->education[0]->degree ?? '') == 'MD' ? 'selected' : '' }}>MD</option>
-                            <option value="MS" {{ old('degree.0', $doctor->education[0]->degree ?? '') == 'MS' ? 'selected' : '' }}>MS</option>
-                            <option value="BDS" {{ old('degree.0', $doctor->education[0]->degree ?? '') == 'BDS' ? 'selected' : '' }}>BDS</option>
-                            <option value="MDS" {{ old('degree.0', $doctor->education[0]->degree ?? '') == 'MDS' ? 'selected' : '' }}>MDS</option>
-                            <option value="PhD" {{ old('degree.0', $doctor->education[0]->degree ?? '') == 'PhD' ? 'selected' : '' }}>PhD</option>
+                            <label for="degree_{{ $key }}" class="text-secondary">Degree</label>
+                            <select name="degree[]" id="degree_{{ $key }}" class="form-control @error('degree.' . $key) is-invalid @enderror" required>
+                                <option value="" disabled selected>Select Degree</option>
+                                <option value="MBBS" {{ old('degree.' . $key, $education->degree ?? '') == 'MBBS' ? 'selected' : '' }}>MBBS</option>
+                                <option value="MD" {{ old('degree.' . $key, $education->degree ?? '') == 'MD' ? 'selected' : '' }}>MD</option>
+                                <option value="MS" {{ old('degree.' . $key, $education->degree ?? '') == 'MS' ? 'selected' : '' }}>MS</option>
+                                <option value="BDS" {{ old('degree.' . $key, $education->degree ?? '') == 'BDS' ? 'selected' : '' }}>BDS</option>
+                                <option value="MDS" {{ old('degree.' . $key, $education->degree ?? '') == 'MDS' ? 'selected' : '' }}>MDS</option>
+                                <option value="PhD" {{ old('degree.' . $key, $education->degree ?? '') == 'PhD' ? 'selected' : '' }}>PhD</option>
                             </select>
-                            @error('degree.0')
+                            @error('degree.' . $key)
                             <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
@@ -270,29 +272,9 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="institution_0" class="text-secondary">Institution</label>
-                            <input type="text" name="institution[]" id="institution_0" class="form-control @error('institution') is-invalid @enderror" value="{{ old('institution.0', $doctor->education[0]->institution ?? '') }}" required>
-                            @error('institution.0')
-                            <span class="invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-
-                     <div class="col-md-4">
-                         <div class="form-group">
-                            <label for="address_0" class="text-secondary">Address</label>
-                            <input type="text" name="address[]" id="address_0" class="form-control @error('address') is-invalid @enderror" value="{{ old('address.0', $doctor->education[0]->address ?? '') }}" required>
-                            @error('address.0')
-                            <span class="invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-                     </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="field_of_study_0" class="text-secondary">Field of Study</label>
-                            <input type="text" name="field_of_study[]" id="field_of_study_0" class="form-control @error('field_of_study') is-invalid @enderror" value="{{ old('field_of_study.0', $doctor->education[0]->field_of_study ?? '') }}" required>
-                            @error('field_of_study.0')
+                            <label for="institution_{{ $key }}" class="text-secondary">Institution</label>
+                            <input type="text" name="institution[]" id="institution_{{ $key }}" class="form-control @error('institution.' . $key) is-invalid @enderror" value="{{ old('institution.' . $key, $education->institution ?? '') }}" required>
+                            @error('institution.' . $key)
                             <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
@@ -300,29 +282,47 @@
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="start_year_bs_0" class="text-secondary">Start Date (BS)</label>
-                            <input type="text" name="start_year_bs[]" id="start_year_bs_0"  class="form-control  nepali-datepicker-start  @error('start_year_bs') is-invalid @enderror" value="{{ old('start_year_bs.0', $doctor->education[0]->start_year_bs ?? '') }}" placeholder="YYYY-MM-DD" data-pair="start-year" required>
-                            <input type="hidden" name="start_year[]" id="start_year_ad_0" class="form-control ad-date-start " value="{{ old('start_year.0', $doctor->education[0]->start_year ?? '') }}"  data-pair="start-year" required>
-                            @error('start_year_bs.0') <span class="invalid-feedback">{{ $message }}</span>@enderror
-                            @error('start_year.0') <span class="invalid-feedback">{{ $message }}</span>@enderror
+                            <label for="address_{{ $key }}" class="text-secondary">Address</label>
+                            <input type="text" name="address[]" id="address_{{ $key }}" class="form-control @error('address.' . $key) is-invalid @enderror" value="{{ old('address.' . $key, $education->address ?? '') }}" required>
+                            @error('address.' . $key)
+                            <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="end_year_bs_0" class="text-secondary">End Date (BS)</label>
-                            <input type="text" name="end_year_bs[]" id="end_year_bs_0"  class="form-control nepali-datepicker-end @error('end_year_bs') is-invalid @enderror" value="{{ old('end_year_bs.0', $doctor->education[0]->end_year_bs ?? '') }}" placeholder="YYYY-MM-DD"  data-pair="end-year">
-                            <input type="hidden" name="end_year[]" id="end_year_ad_0" class="form-control ad-date-end" value="{{ old('end_year.0', $doctor->education[0]->end_year ?? '') }}"  data-pair="end-year">
-                            @error('end_year_bs.0') <span class="invalid-feedback">{{ $message }}</span>@enderror
-                            @error('end_year.0') <span class="invalid-feedback">{{ $message }}</span>@enderror
+                            <label for="field_of_study_{{ $key }}" class="text-secondary">Field of Study</label>
+                            <input type="text" name="field_of_study[]" id="field_of_study_{{ $key }}" class="form-control @error('field_of_study.' . $key) is-invalid @enderror" value="{{ old('field_of_study.' . $key, $education->field_of_study ?? '') }}" required>
+                            @error('field_of_study.' . $key)
+                            <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="edu_certificates_0" class="text-secondary">Certification <i class="fas fa-file-upload"></i></label>
-                            <input type="file" name="edu_certificates[]" id="edu_certificates_0" class="form-control @error('edu_certificates') is-invalid @enderror" value="{{ old('edu_certificates.0', $doctor->education[0]->edu_certificates ?? '') }}">
-                            @error('edu_certificates.0')
+                            <label for="start_year_bs_{{ $key }}" class="text-secondary">Start Date (BS)</label>
+                            <input type="text" name="start_year_bs[]" id="start_year_bs_{{ $key }}" class="form-control nepali-datepicker-start @error('start_year_bs.' . $key) is-invalid @enderror" value="{{ old('start_year_bs.' . $key, $education->start_year_bs ?? '') }}" placeholder="YYYY-MM-DD" required>
+                            <input type="hidden" name="start_year[]" id="start_year_ad_{{ $key }}" class="form-control ad-date-start" value="{{ old('start_year.' . $key, $education->start_year ?? '') }}" required>
+                            @error('start_year_bs.' . $key) <span class="invalid-feedback">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="end_year_bs_{{ $key }}" class="text-secondary">End Date (BS)</label>
+                            <input type="text" name="end_year_bs[]" id="end_year_bs_{{ $key }}" class="form-control nepali-datepicker-end @error('end_year_bs.' . $key) is-invalid @enderror" value="{{ old('end_year_bs.' . $key, $education->end_year_bs ?? '') }}" placeholder="YYYY-MM-DD">
+                            <input type="hidden" name="end_year[]" id="end_year_ad_{{ $key }}" class="form-control ad-date-end" value="{{ old('end_year.' . $key, $education->end_year ?? '') }}">
+                            @error('end_year_bs.' . $key) <span class="invalid-feedback">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="edu_certificates_{{ $key }}" class="text-secondary">Certification <i class="fas fa-file-upload"></i></label>
+                            <input type="file" name="edu_certificates[]" id="edu_certificates_{{ $key }}" class="form-control @error('edu_certificates.' . $key) is-invalid @enderror">
+                            @error('edu_certificates.' . $key)
                             <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
@@ -330,123 +330,125 @@
 
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="additional_information_0" class="text-secondary">Additional Details</label>
-                            <textarea name="additional_information[]" id="additional_information_0" cols="5" rows="3" class="form-control @error('additional_information') is-invalid @enderror">{{ old('additional_information.0', $doctor->education[0]->additional_information ?? '') }}</textarea>
-                            @error('additional_information.0')
+                            <label for="additional_information_{{ $key }}" class="text-secondary">Additional Details</label>
+                            <textarea name="additional_information[]" id="additional_information_{{ $key }}" cols="5" rows="3" class="form-control @error('additional_information.' . $key) is-invalid @enderror">{{ old('additional_information.' . $key, $education->additional_information ?? '') }}</textarea>
+                            @error('additional_information.' . $key)
                             <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
-                        <div class="col-md-12 text-end">
-                            <button type="button" class="btn btn-danger remove-education" style="display:none;">Remove</button>
-                        </div>
+                    <div class="col-md-12 text-end">
+                        <button type="button" class="btn btn-danger remove-education"  data-id="{{$key}}" >Remove</button>
                     </div>
-                    </div>
-                        <div class="d-flex justify-content-between mt-4">
-                            <a href="javascript:void(0)" class="btn btn-outline-secondary" onclick="prevStep(3)"><i class="bi bi-arrow-left"></i> Back</a>
-                            <button type="button" class="add-repeater-row btn btn-success" id="add-education"><i class="fas fa-plus"></i> Add Education</button>
-                            <button type="button" class="btn btn-primary" onclick="nextStep(3)"><i class="bi bi-arrow-right"></i> Next</button>
-                        </div>
-                    </div>
+                </div>
+                @endforeach
+            </div>
+            <div class="d-flex justify-content-between mt-4">
+                <a href="javascript:void(0)" class="btn btn-outline-secondary" onclick="prevStep(3)"><i class="bi bi-arrow-left"></i> Back</a>
+                <button type="button" class="add-repeater-row btn btn-success" id="add-education"><i class="fas fa-plus"></i> Add Education</button>
+                <button type="button" class="btn btn-primary" onclick="nextStep(3)"><i class="bi bi-arrow-right"></i> Next</button>
+            </div>
+        </div>
+
 
         <!-- Step 4: Experience Details -->
         <div class="step" id="step4" style="display:none;">
             <h5 class="text-primary"><i class="fas fa-briefcase"></i> Experience Details</h5>
             <div class="col-md-12" id="experience-fields">
-                <div class="experience-item row" id="experience-item-0">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="type_of_employment_0" class="text-secondary">Type of Employment</label>
-                        <select name="type_of_employment[]" id="type_of_employment_0" class="form-control @error('type_of_employment') is-invalid @enderror" required>
-                        <option value="" disabled selected>Select Employment Type</option>
-                        <option value="Full-time" {{ old('type_of_employment.0', $doctor->experience[0]->type_of_employment ?? '') == 'Full-time' ? 'selected' : '' }}>Full-time</option>
-                        <option value="Part-time" {{ old('type_of_employment.0', $doctor->experience[0]->type_of_employment ?? '') == 'Part-time' ? 'selected' : '' }}>Part-time</option>
-                        <option value="Contract" {{ old('type_of_employment.0', $doctor->experience[0]->type_of_employment ?? '') == 'Contract' ? 'selected' : '' }}>Contract</option>
-                        <option value="Internship" {{ old('type_of_employment.0', $doctor->experience[0]->type_of_employment ?? '') == 'Internship' ? 'selected' : '' }}>Internship</option>
-                        </select>
-                        @error('type_of_employment.0')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
+                @foreach ($experiences as $key => $experience)
+                <div class="experience-item row" id="experience-item-{{ $key }}">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="type_of_employment_{{ $key }}" class="text-secondary">Type of Employment</label>
+                            <select name="type_of_employment[]" id="type_of_employment_{{ $key }}" class="form-control @error('type_of_employment.' . $key) is-invalid @enderror" required>
+                                <option value="" disabled selected>Select Employment Type</option>
+                                <option value="Full-time" {{ old('type_of_employment.' . $key, $experience->type_of_employment ?? '') == 'Full-time' ? 'selected' : '' }}>Full-time</option>
+                                <option value="Part-time" {{ old('type_of_employment.' . $key, $experience->type_of_employment ?? '') == 'Part-time' ? 'selected' : '' }}>Part-time</option>
+                                <option value="Contract" {{ old('type_of_employment.' . $key, $experience->type_of_employment ?? '') == 'Contract' ? 'selected' : '' }}>Contract</option>
+                                <option value="Internship" {{ old('type_of_employment.' . $key, $experience->type_of_employment ?? '') == 'Internship' ? 'selected' : '' }}>Internship</option>
+                            </select>
+                            @error('type_of_employment.' . $key)
+                            <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="job_title_0" class="text-secondary">Job Title</label>
-                        <input type="text" name="job_title[]" id="job_title_0" class="form-control @error('job_title') is-invalid @enderror" value="{{ old('job_title.0', $doctor->experience[0]->job_title ?? '') }}" required>
-                        @error('job_title.0')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="job_title_{{ $key }}" class="text-secondary">Job Title</label>
+                            <input type="text" name="job_title[]" id="job_title_{{ $key }}" class="form-control @error('job_title.' . $key) is-invalid @enderror" value="{{ old('job_title.' . $key, $experience->job_title ?? '') }}" required>
+                            @error('job_title.' . $key)
+                            <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="healthcare_facilities_0" class="text-secondary">Healthcare Facility</label>
-                        <input type="text" name="healthcare_facilities[]" id="healthcare_facilities_0" class="form-control @error('healthcare_facilities') is-invalid @enderror" value="{{ old('healthcare_facilities.0', $doctor->experience[0]->healthcare_facilities ?? '') }}" required>
-                        @error('healthcare_facilities.0')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="healthcare_facilities_{{ $key }}" class="text-secondary">Healthcare Facilities</label>
+                            <input type="text" name="healthcare_facilities[]" id="healthcare_facilities_{{ $key }}" class="form-control @error('healthcare_facilities.' . $key) is-invalid @enderror" value="{{ old('healthcare_facilities.' . $key, $experience->healthcare_facilities ?? '') }}" required>
+                            @error('healthcare_facilities.' . $key)
+                            <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="location_0" class="text-secondary">Location</label>
-                        <input type="text" name="location[]" id="location_0" class="form-control @error('location') is-invalid @enderror" value="{{ old('location.0', $doctor->experience[0]->location ?? '') }}" required>
-                        @error('location.0')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="location_{{ $key }}" class="text-secondary">Location</label>
+                            <input type="text" name="location[]" id="location_{{ $key }}" class="form-control @error('location.' . $key) is-invalid @enderror" value="{{ old('location.' . $key, $experience->location ?? '') }}" required>
+                            @error('location.' . $key)
+                            <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="start_date_bs_0" class="text-secondary">Start Date (BS)</label>
-                        <input type="text" name="start_date_bs[]" id="start_date_bs_0" class="form-control  nepali-datepicker-start  @error('start_date_bs') is-invalid @enderror" value="{{ old('start_date_bs.0', $doctor->experience[0]->start_date_bs ?? '') }}" placeholder="YYYY-MM-DD"  data-pair="start-date" required>
-                        <input type="hidden" name="start_date[]" id="start_date_ad_0" class="form-control ad-date-start" value="{{ old('start_date.0', $doctor->experience[0]->start_date ?? '') }}"  data-pair="start-date" required>
-                        @error('start_date_bs.0') <span class="invalid-feedback">{{ $message }}</span>@enderror
-                        @error('start_date.0') <span class="invalid-feedback">{{ $message }}</span>@enderror
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="start_date_bs_{{ $key }}" class="text-secondary">Start Date (BS)</label>
+                            <input type="text" name="start_date_bs[]" id="start_date_bs_{{ $key }}" class="form-control nepali-datepicker-start @error('start_date_bs.' . $key) is-invalid @enderror" value="{{ old('start_date_bs.' . $key, $experience->start_date_bs ?? '') }}" placeholder="YYYY-MM-DD" required>
+                            <input type="hidden" name="start_date[]" id="start_date_ad_{{ $key }}" class="form-control ad-date-start" value="{{ old('start_date.' . $key, $experience->start_date ?? '') }}" required>
+                            @error('start_date_bs.' . $key) <span class="invalid-feedback">{{ $message }}</span> @enderror
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="end_date_bs_0" class="text-secondary">End Date (BS)</label>
-                        <input type="text" name="end_date_bs[]" id="end_date_bs_0"  class="form-control nepali-datepicker-end @error('end_date_bs') is-invalid @enderror" value="{{ old('end_date_bs.0', $doctor->experience[0]->end_date_bs ?? '') }}" placeholder="YYYY-MM-DD"  data-pair="end-date">
-                        <input type="hidden" name="end_date[]" id="end_date_ad_0" class="form-control ad-date-end" value="{{ old('end_date.0', $doctor->experience[0]->end_date ?? '') }}" data-pair="end-date">
-                        @error('end_date_bs.0') <span class="invalid-feedback">{{ $message }}</span>@enderror
-                        @error('end_date.0') <span class="invalid-feedback">{{ $message }}</span>@enderror
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="end_date_bs_{{ $key }}" class="text-secondary">End Date (BS)</label>
+                            <input type="text" name="end_date_bs[]" id="end_date_bs_{{ $key }}" class="form-control nepali-datepicker-end @error('end_date_bs.' . $key) is-invalid @enderror" value="{{ old('end_date_bs.' . $key, $experience->end_date_bs ?? '') }}" placeholder="YYYY-MM-DD">
+                            <input type="hidden" name="end_date[]" id="end_date_ad_{{ $key }}" class="form-control ad-date-end" value="{{ old('end_date.' . $key, $experience->end_date ?? '') }}">
+                            @error('end_date_bs.' . $key) <span class="invalid-feedback">{{ $message }}</span> @enderror
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="exp_certificates_0" class="text-secondary">Certification <i class="fas fa-file-upload"></i></label>
-                        <input type="file" name="exp_certificates[]" id="exp_certificates_0" class="form-control @error('exp_certificates') is-invalid @enderror" value="{{ old('exp_certificates.0', $doctor->experience[0]->exp_certificates ?? '') }}">
-                        @error('exp_certificates.0')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="exp_certificates_{{ $key }}" class="text-secondary">Experience Certification <i class="fas fa-file-upload"></i></label>
+                            <input type="file" name="exp_certificates[]" id="exp_certificates_{{ $key }}" class="form-control @error('exp_certificates.' . $key) is-invalid @enderror">
+                            @error('exp_certificates.' . $key)
+                            <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
-                </div>
 
-                 <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="additional_details_0" class="text-secondary">Additional Details</label>
-                        <textarea name="additional_details[]" id="additional_details_0" cols="5" rows="3" class="form-control @error('additional_details') is-invalid @enderror">{{ old('additional_details.0', $doctor->experience[0]->additional_details ?? '') }}</textarea>
-                        @error('additional_details.0')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="additional_details_{{ $key }}" class="text-secondary">Additional Details</label>
+                            <textarea name="additional_details[]" id="additional_details_{{ $key }}" cols="5" rows="3" class="form-control @error('additional_details.' . $key) is-invalid @enderror">{{ old('additional_details.' . $key, $experience->additional_details ?? '') }}</textarea>
+                            @error('additional_details.' . $key)
+                            <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-end">
+                        <button type="button" class="btn btn-danger remove-experience"  data-id="{{$key}}">Remove</button>
                     </div>
                 </div>
-                <div class="col-md-12 text-end">
-                    <button type="button" class="btn btn-danger remove-experience" style="display:none;">Remove</button>
-                </div>
-            </div>
+                @endforeach
             </div>
             <div class="d-flex justify-content-between mt-4">
                 <a href="javascript:void(0)" class="btn btn-outline-secondary" onclick="prevStep(4)"><i class="bi bi-arrow-left"></i> Back</a>
-                <button type="button" id="add-experience" class="add-repeater-row btn btn-success">Add Experience</button>
+                <button type="button" class="add-repeater-row btn btn-success" id="add-experience"><i class="fas fa-plus"></i> Add Experience</button>
                 <button type="button" class="btn btn-primary" onclick="nextStep(4)"><i class="bi bi-arrow-right"></i> Next</button>
             </div>
         </div>
