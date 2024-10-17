@@ -93,6 +93,16 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label for="profile_image" class="text-secondary">Profile Image <i class="fas fa-file-upload"></i></label>
+                        <input type="file" name="profile_image" id="profile_image" class="form-control @error('profile_image') is-invalid @enderror">
+                        @error('profile_image')
+                        <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label for="status" class="text-secondary">Status <span class="text-danger">*</span></label>
                         <select name="status" id="status" class="form-control @error('status') is-invalid @enderror" required>
                             <option value="" disabled selected>Select Status</option>
@@ -251,7 +261,12 @@
             <h5 class="text-primary"><i class="fas fa-graduation-cap"></i> Education Details</h5>
             <div class="col-md-12" id="education-fields">
                   @foreach ($educations as $key => $education)
-                <div class="education-item row" id="education-item-{{ $key }}">
+                <div class="education-item border p-3 mb-3" id="education-item-{{ $key }}">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="text-success">Education Entry {{$key + 1}}</h6>
+                        <button type="button" class="btn btn-danger remove-education" data-id="{{ $key }}">Remove</button>
+                    </div>
+                    <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="degree_{{ $key }}" class="text-secondary">Degree</label>
@@ -337,10 +352,8 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-12 text-end">
-                        <button type="button" class="btn btn-danger remove-education"  data-id="{{$key}}" >Remove</button>
-                    </div>
                 </div>
+            </div>
                 @endforeach
             </div>
             <div class="d-flex justify-content-between mt-4">
@@ -356,7 +369,12 @@
             <h5 class="text-primary"><i class="fas fa-briefcase"></i> Experience Details</h5>
             <div class="col-md-12" id="experience-fields">
                 @foreach ($experiences as $key => $experience)
-                <div class="experience-item row" id="experience-item-{{ $key }}">
+                <div class="experience-item border p-3 mb-3" id="experience-item-{{ $key }}">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="text-success">Experience Entry {{ $key + 1 }}</h6>
+                        <button type="button" class="btn btn-danger remove-experience" data-id="{{ $key }}">Remove</button>
+                    </div>
+                    <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="type_of_employment_{{ $key }}" class="text-secondary">Type of Employment</label>
@@ -440,8 +458,6 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-12 text-end">
-                        <button type="button" class="btn btn-danger remove-experience"  data-id="{{$key}}">Remove</button>
                     </div>
                 </div>
                 @endforeach
@@ -514,7 +530,6 @@
 @stack('js')
 @include('components.form-repeater')
 @include('components.datepicker')
-@include('components.submit-form')
 @include('components.step-widget')
 @include('components.address-nepali')
 @include('components.eye_icon')

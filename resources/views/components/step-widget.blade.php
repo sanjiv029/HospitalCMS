@@ -71,7 +71,8 @@
         { field: 'date_of_birth_ad', msg: 'Date of Birth (BS) is required.', func: (value) => value !== '' && new Date(value) < new Date() },
         { field: 'date_of_birth_bs', msg: 'Date of Birth (BS) is required.', func: (value) => value !== '' },
         { field: 'gender', msg: 'Gender is required.', func: (value) => value !== '' },
-        { field: 'marital_status', msg: 'Marital status is required.', func: (value) => value !== '' }
+        { field: 'marital_status', msg: 'Marital status is required.', func: (value) => value !== '' },
+        { field: 'profile_image', msg: 'Invalid profile image.', func: validateFile }
     ];
     return validateFields(validations);
     }
@@ -120,10 +121,10 @@
 
         for (let i = 0; i < experienceCount; i++) {
             validations.push(
+                { field: `type_of_employment_${i}`, msg: 'Employment type is required.', func: (value) => value !== '' },
                 { field: `job_title_${i}`, msg: 'Job title is required.', func: (value) => value !== '' },
                 { field: `healthcare_facilities_${i}`, msg: 'Healthcare facility field is required.', func: (value) => value !== '' },
                 { field: `location_${i}`, msg: 'Location is required.', func: (value) => value !== '' },
-                { field: `type_of_employment_${i}`, msg: 'Employment type is required.', func: (value) => value !== '' },
                 { field: `start_date_bs_${i}`, msg: 'Start date (BS) is required.', func: (value) => value !== '' },
                 { field: `end_date_bs_${i}`, msg: 'End date (BS) must be after start date (BS).', func: (value) => validateEndDateOrYear(`end_date_bs_${i}`, `start_date_bs_${i}`) },
                 { field: `start_date_ad_${i}`, msg: 'Start date (AD) is required.', func: (value) => value !== '' },

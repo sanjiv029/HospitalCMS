@@ -45,7 +45,7 @@
 
         // Add a new education or experience item
         function addItem(type) {
-            const count = type === 'education' ? educationCount : experienceCount;
+            const count = type === 'education' ? educationCount: experienceCount;
             const itemClass = type === 'education' ? '.education-item' : '.experience-item';
             const fieldsId = type === 'education' ? 'education-fields' : 'experience-fields';
 
@@ -124,7 +124,7 @@
                 item.setAttribute('data-id', index);
 
                 // Update input names and IDs
-                item.querySelectorAll('input, select, textarea').forEach(input => {
+                item.querySelectorAll('input, select, textarea, name').forEach(input => {
                     const nameParts = input.name.split('[');
                     if (nameParts.length > 1) {
                         nameParts[1] = `${index}]`; // Set the correct index

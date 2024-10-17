@@ -27,145 +27,169 @@
             <div class="tab-content mt-3" id="doctorDetailsTabContent">
                 {{-- Basic Details --}}
                 <div class="tab-pane fade show active" id="basic-info" role="tabpanel" aria-labelledby="basic-info-tab">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="name">Name:</label>
-                                <p>{{ $doctor->name }}</p>
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="text-left mb-4">
+                                <div class="profile-image mb-2">
+                                    <img src="{{ $doctor->profile_image }}" alt="{{ $doctor->name }}'s Profile Image" class="img-fluid rounded-circle border" style="max-width: 150px;">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="email">Email:</label>
-                                <p>{{ $doctor->email }}</p>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Phone Number:</label>
-                                <p>{{ $doctor->phone }}</p>
-                            </div>
-                            <div class="form-group">
-                                <label for="gender">Gender:</label>
-                                <p>{{ $doctor->gender }}</p>
-                            </div>
-                            <div class="form-group">
-                                <label for="marital_status">Marital Status:</label>
-                                <p>{{ $doctor->marital_status }}</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="department">Department:</label>
-                                <p>{{ $doctor->department->name }}</p>
-                            </div>
-                            <div class="form-group">
-                                <label for="date_of_birth_ad">Date Of Birth (A.D):</label>
-                                <p>{{ $doctor->date_of_birth_ad }}</p>
-                            </div>
-                            <div class="form-group">
-                                <label for="date_of_birth_bs">Date Of Birth (B.S):</label>
-                                <p>{{ $doctor->date_of_birth_bs }}</p>
-                            </div>
-                            <div class="form-group">
-                                <label for="status">Status:</label>
-                                <p>{{ $doctor->status }}</p>
+
+                            <!-- Details Section Below the Image -->
+                            <div class="row">
+                                <!-- Left Column -->
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="fw-bold" for="name"><i class="bi bi-person-fill"></i> Name:</label>
+                                        <p>{{ $doctor->name }}</p>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="fw-bold" for="email"><i class="bi bi-envelope-fill"></i> Email:</label>
+                                        <p>{{ $doctor->email }}</p>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="fw-bold" for="phone"><i class="bi bi-telephone-fill"></i> Phone Number:</label>
+                                        <p>{{ $doctor->phone }}</p>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="fw-bold" for="gender"><i class="bi bi-gender-ambiguous"></i> Gender:</label>
+                                        <p>{{ $doctor->gender }}</p>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="fw-bold" for="marital_status"><i class="bi bi-heart-fill"></i> Marital Status:</label>
+                                        <p>{{ $doctor->marital_status }}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Right Column -->
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="fw-bold" for="department"><i class="bi bi-building"></i> Department:</label>
+                                        <p>{{ $doctor->department->name }}</p>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="fw-bold" for="date_of_birth_ad"><i class="bi bi-calendar-date"></i> Date Of Birth (A.D):</label>
+                                        <p>{{ $doctor->date_of_birth_ad }}</p>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="fw-bold" for="date_of_birth_bs"><i class="bi bi-calendar2-date"></i> Date Of Birth (B.S):</label>
+                                        <p>{{ $doctor->date_of_birth_bs }}</p>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="fw-bold" for="status"><i class="bi bi-check-circle-fill"></i> Status:</label>
+                                        <p>{{ $doctor->status }}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 {{-- Address Details --}}
                 <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="permanent_address"><i class="bi bi-geo-alt-fill"></i> Permanent Addres</label>
-                                <p>{{ $doctor->municipality->muni_name_en }}, {{ $doctor->district->district_english_name }}, {{ $doctor->province->english_name }} Province</p>
+                            <div class="form-group mb-4">
+                                <h5 class="text-primary"><i class="bi bi-geo-alt-fill"></i> Permanent Address</h5>
+                                <p class="text-muted">
+                                    <i class="bi bi-house-fill"></i> {{ $doctor->municipality->muni_name_en }}, {{ $doctor->district->district_english_name }}, {{ $doctor->province->english_name }} Province
+                                </p>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="temporary_address"><i class="bi bi-geo-alt-fill"></i> Temporary Address</label>
-                                <p>{{$doctor->temporaryMunicipality->muni_name_en ?? 'N/A' }}, {{ $doctor->temporaryDistrict->district_english_name ?? 'N/A' }}, {{ $doctor->temporaryProvince->english_name ?? 'N/A' }} Province</p>
-
+                            <div class="form-group mb-4">
+                                <h5 class="text-primary"><i class="bi bi-geo-alt-fill"></i> Temporary Address</h5>
+                                <p class="text-muted">
+                                    <i class="bi bi-house-door-fill"></i> {{ $doctor->temporaryMunicipality->muni_name_en ?? 'N/A' }}, {{ $doctor->temporaryDistrict->district_english_name ?? 'N/A' }}, {{ $doctor->temporaryProvince->english_name ?? 'N/A' }} Province
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-
-                        {{-- Education Details --}}
-            <div class="tab-pane fade" id="education" role="tabpanel" aria-labelledby="education-tab">
-                <h5>Education Information</h5>
-                <div class="row">
-                @if(!empty($doctor->education)) {{-- Assuming education is a JSON column --}}
-                    @foreach(json_decode($doctor->education, true) as $education)
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="degree">Degree:</label>
-                            <p>{{ $education['degree'] }} from {{ $education['institution'] }} ({{ $education['start_year'] }} - {{ $education['end_year'] }})</p>
-                        </div>
-                        <div class="form-group">
-                            <label for="address">Address</label>
-                            <p>{{ $education['address'] }}</p>
-                        </div>
-                        <div class="form-group">
-                            <label for="edu_certificates">Education Certificates</label>
-                                <p>
-                                <a href="{{ Storage::url('/public/storage/Education certificates') }}" target="_blank">
-                                    View Certificate
-                                </a>
-                                 </p>
-                        </div>
+                {{-- Education Details --}}
+                <div class="tab-pane fade" id="education" role="tabpanel" aria-labelledby="education-tab">
+                    <h5 class="text-primary mb-3"><i class="bi bi-book-half"></i> Education Information</h5>
+                    <div class="row">
+                        @if(!empty($doctor->education))
+                            @foreach($doctor->education as $education)
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group">
+                                    <label class="fw-bold text-muted"><i class="bi bi-mortarboard"></i> Degree:</label>
+                                    <p>{{ $education['degree'] }} from {{ $education['institution'] }} ({{ $education['start_year'] }} - {{ $education['end_year'] }})</p>
+                                </div>
+                                <div class="form-group">
+                                    <label class="fw-bold text-muted"><i class="bi bi-geo-alt"></i> Address:</label>
+                                    <p>{{ $education['address'] }}</p>
+                                </div>
+                                <div class="form-group">
+                                    <label class="fw-bold text-muted"><i class="bi bi-file-earmark-text"></i> Education Certificates:</label>
+                                    @if (!empty($education['edu_certificates']))
+                                        <p>
+                                            <a href="{{ asset($education['edu_certificates']) }}" target="_blank" class="btn btn-link p-0">
+                                                <i class="bi bi-file-earmark-arrow-down"></i> View Certificate
+                                            </a>
+                                        </p>
+                                    @else
+                                        <p>No education certificates available.</p>
+                                    @endif
+                                </div>
+                            </div>
+                            @endforeach
+                        @else
+                            <p class="text-muted">No education information available.</p>
+                        @endif
                     </div>
-                    @endforeach
-                @else
-                    <p>No education information available.</p>
-                @endif
                 </div>
-            </div>
 
-            {{-- Experience Details --}}
-            <div class="tab-pane fade" id="experience" role="tabpanel" aria-labelledby="experience-tab">
-                <h5>Experience Information</h5>
-                <div class="row">
-                @if(!empty($doctor->experience)) {{-- Assuming experience is a JSON column --}}
-                    @foreach(json_decode($doctor->experience, true) as $experience)
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="job_title">Job Title:</label>
-                            <p>{{ $experience['job_title'] }} at {{ $experience['healthcare_facilities'] }} ({{ $experience['start_date'] }} - {{ $experience['end_date'] }})</p>
-                        </div>
-                        <div class="form-group">
-                            <label for="employment_type">Employment Type</label>
-                            <p>{{ $experience['type_of_employment'] }}</p>
-                        </div>
-                        <div class="form-group">
-                            <label for="location">Location</label>
-                            <p>{{ $experience['location'] }}</p>
-                        </div>
-                        <div class="form-group">
-                        <label for="exp_certificates">Experience Certificates</label>
-                            <p>
-                            <a href="{{ Storage::url('/public/storage/Experience certificates') }}" target="_blank">
-                                View Certificate
-                            </a>
-                             </p>
-                        </div>
+                {{-- Experience Details --}}
+                <div class="tab-pane fade" id="experience" role="tabpanel" aria-labelledby="experience-tab">
+                    <h5 class="text-primary mb-3"><i class="bi bi-briefcase-fill"></i> Experience Information</h5>
+                    <div class="row">
+                        @if(!empty($doctor->experience))
+                            @foreach($doctor->experience as $experience)
+                            <div class="col-md-6 mb-4">
+                                <div class="form-group">
+                                    <label class="fw-bold text-muted"><i class="bi bi-briefcase"></i> Job Title:</label>
+                                    <p>{{ $experience['job_title'] }} at {{ $experience['healthcare_facilities'] }} ({{ $experience['start_date'] }} - {{ $experience['end_date'] }})</p>
+                                </div>
+                                <div class="form-group">
+                                    <label class="fw-bold text-muted"><i class="bi bi-people-fill"></i> Employment Type:</label>
+                                    <p>{{ $experience['type_of_employment'] }}</p>
+                                </div>
+                                <div class="form-group">
+                                    <label class="fw-bold text-muted"><i class="bi bi-geo-fill"></i> Location:</label>
+                                    <p>{{ $experience['location'] }}</p>
+                                </div>
+                                <div class="form-group">
+                                    <label class="fw-bold text-muted"><i class="bi bi-file-earmark-text"></i> Experience Certificates:</label>
+                                    @if (!empty($experience['exp_certificates']))
+                                        <p>
+                                            <a href="{{ asset($experience['exp_certificates']) }}" target="_blank" class="btn btn-link p-0">
+                                                <i class="bi bi-file-earmark-arrow-down"></i> View Certificate
+                                            </a>
+                                        </p>
+                                    @else
+                                        <p>No experience certificates available.</p>
+                                    @endif
+                                </div>
+                            </div>
+                            @endforeach
+                        @else
+                            <p class="text-muted">No experience information available.</p>
+                        @endif
                     </div>
-                    @endforeach
-                @else
-                    <p>No experience information available.</p>
-                @endif
                 </div>
-            </div>
 
-            <div class="mt-3">
-                <a href="{{ route('doctors.edit', $doctor->id) }}" class="btn btn-warning">Edit</a>
-                <form action="{{ route('doctors.destroy', $doctor->id) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-                <a href="{{ route('doctors.index') }}" class="btn btn-secondary">Back</a>
-            </div>
+                {{-- Action Buttons --}}
+                <div class="mt-3 text-start">
+                    <a href="{{ route('doctors.edit', $doctor->id) }}" class="btn btn-warning me-2"><i class="bi bi-pencil-fill"></i> Edit</a>
+                    <form action="{{ route('doctors.destroy', $doctor->id) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Delete</button>
+                    </form>
+                    <a href="{{ route('doctors.index') }}" class="btn btn-secondary ms-2"><i class="bi bi-arrow-left-circle"></i> Back</a>
+                </div>
         </div>
     </div>
 @stop

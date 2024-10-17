@@ -28,9 +28,6 @@ class DoctorsDataTable extends DataTable
                     ->addColumn('department_name', function ($doctor) {
                         return $doctor->department ? $doctor->department->name : 'N/A'; // Get department name
                     })
-                    ->addColumn('user_id', function ($doctor) {
-                        return $doctor->user ? $doctor->user->id : 'N/A';
-                    })
             ->addColumn('action', function($data){
                 $url = '/admin/doctor/';
                 $buttons['view'] = true;
@@ -61,7 +58,7 @@ class DoctorsDataTable extends DataTable
                     ->minifiedAjax()
                     ->orderBy(1)
                     ->selectStyleSingle()
-                    ->responsive(true) 
+                    ->responsive(true)
                     ->parameters([
                         'responsive' => true,
                         'autoWidth' => true,
@@ -85,14 +82,12 @@ class DoctorsDataTable extends DataTable
             Column::make('department_name')
             ->title('Department'),
             Column::make('email')
-            ->width(200),
-            COlumn::make('user_id')
-            ->width(100),
+            ->width(250),
             Column::make('phone')
-            ->width(100),
+            ->width(150),
             Column::make('date_of_birth_ad')
                 ->title('Date of Birth (A.D)')
-                ->width(150),
+                ->width(170),
             Column::make('status')
             ->width(150),
             Column::computed('action')
