@@ -263,8 +263,8 @@
                   @foreach ($educations as $key => $education)
                 <div class="education-item border p-3 mb-3" id="education-item-{{ $key }}">
                     <div class="d-flex justify-content-between">
-                        <h6 class="text-success">Education Entry {{$key + 1}}</h6>
-                        <button type="button" class="btn btn-danger remove-education" data-id="{{ $key }}">Remove</button>
+                        <h6 class="text-success">Education Entry</h6>
+                        <button type="button" class="btn btn-danger remove-education btn-sm-auto" data-id="{{ $key }}">Remove</button>
                     </div>
                     <div class="row">
                     <div class="col-md-4">
@@ -358,7 +358,9 @@
             </div>
             <div class="d-flex justify-content-between mt-4">
                 <a href="javascript:void(0)" class="btn btn-outline-secondary" onclick="prevStep(3)"><i class="bi bi-arrow-left"></i> Back</a>
-                <button type="button" class="add-repeater-row btn btn-success" id="add-education"><i class="fas fa-plus"></i> Add Education</button>
+                <button type="button" class="add-repeater-row btn btn-success btn-sm-auto" id="add-education">
+                    <i class="fas fa-plus"></i> Add Education
+                  </button>
                 <button type="button" class="btn btn-primary" onclick="nextStep(3)"><i class="bi bi-arrow-right"></i> Next</button>
             </div>
         </div>
@@ -371,8 +373,8 @@
                 @foreach ($experiences as $key => $experience)
                 <div class="experience-item border p-3 mb-3" id="experience-item-{{ $key }}">
                     <div class="d-flex justify-content-between">
-                        <h6 class="text-success">Experience Entry {{ $key + 1 }}</h6>
-                        <button type="button" class="btn btn-danger remove-experience" data-id="{{ $key }}">Remove</button>
+                        <h6 class="text-success">Experience Entry</h6>
+                        <button type="button" class="btn btn-danger remove-experience btn-sm-auto" data-id="{{ $key }}">Remove</button>
                     </div>
                     <div class="row">
                     <div class="col-md-4">
@@ -464,7 +466,7 @@
             </div>
             <div class="d-flex justify-content-between mt-4">
                 <a href="javascript:void(0)" class="btn btn-outline-secondary" onclick="prevStep(4)"><i class="bi bi-arrow-left"></i> Back</a>
-                <button type="button" class="add-repeater-row btn btn-success" id="add-experience"><i class="fas fa-plus"></i> Add Experience</button>
+                <button type="button" class="add-repeater-row btn btn-success btn-sm-auto" id="add-experience"><i class="fas fa-plus"></i> Add Experience</button>
                 <button type="button" class="btn btn-primary" onclick="nextStep(4)"><i class="bi bi-arrow-right"></i> Next</button>
             </div>
         </div>

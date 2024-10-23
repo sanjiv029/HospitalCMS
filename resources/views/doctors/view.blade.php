@@ -182,13 +182,13 @@
 
                 {{-- Action Buttons --}}
                 <div class="mt-3 text-start">
+                    <a href="{{ route('doctors.index') }}" class="btn btn-secondary ms-2"><i class="bi bi-arrow-left-circle"></i> Back</a>
                     <a href="{{ route('doctors.edit', $doctor->id) }}" class="btn btn-warning me-2"><i class="bi bi-pencil-fill"></i> Edit</a>
                     <form action="{{ route('doctors.destroy', $doctor->id) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Delete</button>
                     </form>
-                    <a href="{{ route('doctors.index') }}" class="btn btn-secondary ms-2"><i class="bi bi-arrow-left-circle"></i> Back</a>
                 </div>
         </div>
     </div>

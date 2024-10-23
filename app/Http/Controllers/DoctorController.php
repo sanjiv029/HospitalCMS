@@ -79,13 +79,10 @@ class DoctorController extends Controller
     }
     public function checkType($data, $no = null, $model = null)
     {
-        // Check if a profile image is uploaded
         if (isset($data['profile_image'])) {
             // Handle the uploaded file
             $fileName = date('YmdHi') . $data['profile_image']->getClientOriginalName();
-            // Store the image in the 'DoctorImages' directory
             $data['profile_image']->storeAs('/DoctorImages', $fileName, 'public');
-            // Update the content with the path to the stored image
             $data['profile_image'] = '/storage/DoctorImages/' . $fileName;
         }
 

@@ -76,9 +76,13 @@ class Doctor extends Model
     public function education(){
         return $this->hasMany(Education::class);
     }
-        public function user()
+    public function user()
     {
         return $this->hasOne(User::class);
+    }
+
+    public function schedules() {
+        return $this->hasMany(Schedule::class);
     }
 }
 

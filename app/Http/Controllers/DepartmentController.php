@@ -15,10 +15,9 @@ class DepartmentController extends Controller
      */
         public function index(DepartmentsDataTable $dataTable)
         {
-
-            return $dataTable->render('common.index',[
-                'resourceName'=>'Departments',
-                'resourceRoute'=>'departments',
+            return $dataTable->render('common.index', [
+                'resourceName' => 'Departments',
+                'resourceRoute' => 'departments',
             ]);
         }
 

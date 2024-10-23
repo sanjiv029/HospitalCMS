@@ -310,6 +310,11 @@ return [
             'url' => 'admin/doctor',
             'icon' => 'far fa-fw fa-file',
         ],
+        [
+            'text' => "Doctor's Schedule",
+            'url' => 'admin/schedule',
+            'icon' => 'far fa-fw fa-file',
+        ],
        /*  [
             'text' => 'Doctor Details',
             'icon' => 'far fa-fw fa-file',
