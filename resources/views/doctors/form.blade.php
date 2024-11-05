@@ -94,13 +94,22 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="profile_image" class="text-secondary">Profile Image <i class="fas fa-file-upload"></i></label>
+
+                        {{-- Show the saved profile image if it exists --}}
+                        @if(isset($doctor) && $doctor->profile_image)
+                            <div class="mb-3">
+                                <p>Current Profile Image:</p>
+                                <img src="{{ asset($doctor->profile_image) }}" alt="Profile Image" style="max-width: 200px; max-height: 200px;">
+                            </div>
+                        @endif
+
                         <input type="file" name="profile_image" id="profile_image" class="form-control @error('profile_image') is-invalid @enderror">
+
                         @error('profile_image')
-                        <span class="invalid-feedback">{{ $message }}</span>
+                            <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
-
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="status" class="text-secondary">Status <span class="text-danger">*</span></label>
@@ -337,12 +346,20 @@
                         <div class="form-group">
                             <label for="edu_certificates_{{ $key }}" class="text-secondary">Certification <i class="fas fa-file-upload"></i></label>
                             <input type="file" name="edu_certificates[]" id="edu_certificates_{{ $key }}" class="form-control @error('edu_certificates.' . $key) is-invalid @enderror">
+
                             @error('edu_certificates.' . $key)
-                            <span class="invalid-feedback">{{ $message }}</span>
+                                <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
+
+                            {{-- Display the filename if an existing certification file is present --}}
+                            @if(isset($education) && $education->edu_certificates)
+                                @php
+                                    $filename = basename($education->edu_certificates);
+                                @endphp
+                                <p>Current File: <a href="{{ asset($education->edu_certificates) }}" target="_blank">{{ $filename }}</a></p>
+                            @endif
                         </div>
                     </div>
-
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="additional_information_{{ $key }}" class="text-secondary">Additional Details</label>
@@ -445,9 +462,18 @@
                         <div class="form-group">
                             <label for="exp_certificates_{{ $key }}" class="text-secondary">Experience Certification <i class="fas fa-file-upload"></i></label>
                             <input type="file" name="exp_certificates[]" id="exp_certificates_{{ $key }}" class="form-control @error('exp_certificates.' . $key) is-invalid @enderror">
+
                             @error('exp_certificates.' . $key)
-                            <span class="invalid-feedback">{{ $message }}</span>
+                                <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
+
+                            {{-- Display the filename if an existing experience certification file is present --}}
+                            @if(isset($experience) && $experience->exp_certificates)
+                                @php
+                                    $filename = basename($experience->exp_certificates);
+                                @endphp
+                                <p>Current File: <a href="{{ asset($experience->exp_certificates) }}" target="_blank">{{ $filename }}</a></p>
+                            @endif
                         </div>
                     </div>
 

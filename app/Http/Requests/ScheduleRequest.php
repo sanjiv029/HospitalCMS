@@ -26,7 +26,7 @@ class ScheduleRequest extends FormRequest
             // Validate start_time
             $rules["schedule.{$day}.start_time"] = [
                 'required',
-                'date_format:H:i:s',
+                'date_format:H:i',
                 function ($attribute, $value, $fail) use ($day) {
                     $endTime = $this->input("schedule.{$day}.end_time");
 
@@ -40,7 +40,7 @@ class ScheduleRequest extends FormRequest
             // Validate end_time
             $rules["schedule.{$day}.end_time"] = [
                 'required',
-                'date_format:H:i:s',
+                'date_format:H:i',
                 function ($attribute, $value, $fail) use ($day) {
                     $startTime = $this->input("schedule.{$day}.start_time");
 

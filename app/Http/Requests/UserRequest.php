@@ -24,7 +24,8 @@ class UserRequest extends FormRequest
         $userId = $this->route('user') ? $this->route('user')->id : null;
 
         return [
-            'doctor_id' => 'nullable|exists:doctors,id', // Make nullable if applicable
+            'doctor_id' => 'nullable|exists:doctors,id',
+            'patient_id' => 'nullable|exists:patients,id',
             'name' => 'required|string|max:255',
             'email' => [
                 'required',

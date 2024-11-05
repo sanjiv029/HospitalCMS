@@ -290,9 +290,6 @@ return [
             'icon' => 'far fa-fw fa-file',
 
         ],
-        ['header' => 'Tables',
-
-        ],
         [
             'text' => 'Users',
             'url' => 'admin/user',
@@ -315,62 +312,26 @@ return [
             'url' => 'admin/schedule',
             'icon' => 'far fa-fw fa-file',
         ],
-       /*  [
-            'text' => 'Doctor Details',
+        [
+            'text' => "Appointments",
+            'url' => 'admin/appointment',
             'icon' => 'far fa-fw fa-file',
-
-            'submenu'=> [
-                [
-                    'text' => 'Education',
-                    'url' => 'admin/education',
-                    'icon' => 'far fa-fw fa-file',
-
-                ],
-                [
-                    'text' => 'Experiences',
-                    'url' => 'admin/experience',
-                    'icon' => 'far fa-fw fa-file',
-
-                ],
-                [
-                    'text' => 'Address',
-                    'url' => 'admin/address',
-                    'icon' => 'far fa-fw fa-file',
-
-                ],
-
-            ],
-        ], */
-
-        /* [
-            'text' => 'Provinces',
-            'url' => 'admin/province',
-            'icon' => 'far fa-fw fa-file',
-
         ],
         [
-            'text' => 'Districts',
-            'url' => 'admin/district',
+            'text' => "Menu",
+            'url' => 'admin/menus',
             'icon' => 'far fa-fw fa-file',
-
         ],
         [
-            'text' => 'Municipalities',
-            'url' => 'admin/municipality',
-
-
-        ], */
-       /*  ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
+            'text' => "Module",
+            'url' => 'admin/modules',
+            'icon' => 'far fa-fw fa-file',
         ],
         [
-            'text' => 'change_password',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ], */
+            'text' => "Pages",
+            'url' => 'admin/pages',
+            'icon' => 'far fa-fw fa-file',
+        ],
 
     ],
 

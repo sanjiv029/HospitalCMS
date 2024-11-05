@@ -3,9 +3,9 @@
 return [
 
     /*
-    |--------------------------------------------------------------------------
+    |---------------------------------------------------------------------------
     | Default Mailer
-    |--------------------------------------------------------------------------
+    |---------------------------------------------------------------------------
     |
     | This option controls the default mailer that is used to send all email
     | messages unless another mailer is explicitly specified when sending
@@ -14,12 +14,12 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'log'),
+    'default' => env('MAIL_MAILER', 'smtp'),
 
     /*
-    |--------------------------------------------------------------------------
+    |---------------------------------------------------------------------------
     | Mailer Configurations
-    |--------------------------------------------------------------------------
+    |---------------------------------------------------------------------------
     |
     | Here you may configure all of the mailers used by your application plus
     | their respective settings. Several examples have been configured for
@@ -36,18 +36,18 @@ return [
     */
 
     'mailers' => [
+       'smtp' => [
+                    'transport' => 'smtp',
+                    'url' => env('MAIL_URL'),
+                    'host' => env('MAIL_HOST', 'localhost'), // Ensure this is set to 'localhost'
+                    'port' => env('MAIL_PORT', 1025), // Ensure this is set to 1025
+                    'encryption' => env('MAIL_ENCRYPTION', 'null'), // Use 'null' for no encryption
+                    'username' => env('MAIL_USERNAME'), // This can be left null
+                    'password' => env('MAIL_PASSWORD'), // This can be left null
+                    'timeout' => null,
+                    'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
+                ],
 
-        'smtp' => [
-            'transport' => 'smtp',
-            'url' => env('MAIL_URL'),
-            'host' => env('MAIL_HOST', '127.0.0.1'),
-            'port' => env('MAIL_PORT', 2525),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
-            'timeout' => null,
-            'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
-        ],
 
         'ses' => [
             'transport' => 'ses',
@@ -55,10 +55,6 @@ return [
 
         'postmark' => [
             'transport' => 'postmark',
-            // 'message_stream_id' => env('POSTMARK_MESSAGE_STREAM_ID'),
-            // 'client' => [
-            //     'timeout' => 5,
-            // ],
         ],
 
         'resend' => [
@@ -94,13 +90,12 @@ return [
                 'postmark',
             ],
         ],
-
     ],
 
     /*
-    |--------------------------------------------------------------------------
+    |---------------------------------------------------------------------------
     | Global "From" Address
-    |--------------------------------------------------------------------------
+    |---------------------------------------------------------------------------
     |
     | You may wish for all emails sent by your application to be sent from
     | the same address. Here you may specify a name and address that is
@@ -109,7 +104,7 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'noreply@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 

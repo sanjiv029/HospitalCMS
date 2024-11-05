@@ -1,15 +1,15 @@
 
    <!-- Banner Section -->
-   <section class="banner-section bg-info text-light">
+   <section class="banner-section bg-info text-info mb-0">
     <div class="container text-center d-flex flex-column justify-content-between h-100 py-5">
         <h3 class="banner-heading">
             Keep yourself and your family healthy
         </h3>
-        <h3 class="banner-heading mt-3">
+        <h3 class="banner-heading mt-2">
             Find the right specialist
         </h3>
         <div class="mt-4">
-            <a href="#" class="btn btn-primary btn-lg">Consult Now <em class="bi bi-chevron-right"></em></a>
+            <a href="{{route('appointments.book')}}" class="btn btn-info btn-lg">Consult Now <em class="bi bi-chevron-right"></em></a>
         </div>
     </div>
     <section class="stats-section py-5">

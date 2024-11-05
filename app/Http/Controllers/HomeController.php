@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
-use App\Models\Doctor; // Ensure this is the correct path for your Doctor model
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -15,7 +15,8 @@ class HomeController extends Controller
         $numberOfDepartments =Department::count();
         $doctors = Doctor::with('department')->get();
         $departments = Department::all();
-        // Pass the variable to the view
         return view('welcome', compact('numberOfDoctors','numberOfDepartments','doctors','departments'));
     }
+
+
 }

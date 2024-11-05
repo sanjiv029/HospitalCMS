@@ -1,8 +1,8 @@
-<div class="doctor-container position-relative" id="doctors">
+<div class="doctor-container position-relative" id="doctors" style="bottom: 0; left: 0; right: 0; background-color: #f8f9fa; border-top: 2px solid #dcdcdc; padding: 20px;">
     <div class="title mt-5 mb-5 text-center">
         <h2>Book Appointments with Top Doctors</h2>
         <p>200+ experienced medical practitioners available for video consultation and appointment</p>
-        <a href="" class="btn btn-primary position-absolute" style="top: 100px; right: 100px; transform: translate(50%, -50%);">View All</a>
+        <a href="{{route('doctor')}}" class="btn btn-primary position-absolute" style="top: 100px; right: 100px; transform: translate(50%, -50%);">View All</a>
     </div>
     <button class="btn btn-secondary position-absolute left-arrow" id="scrollLeft">&lt;</button>
     <div class="row overflow-auto bg-light mt-4 ml-5 mr-5">
@@ -15,7 +15,13 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">Dr. {{ $doctor->name }}</h5>
                         <p class="card-text">Department: {{ $doctor->department->name }}</p>
-                        <a href="#" class="btn btn-primary">Book Appointment</a>
+                        <!-- Use a form to pass both doctor_id and department_id -->
+                        <form action="{{ route('appointments.time.slots.select') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="department_id" value="{{ $doctor->department->id }}">
+                            <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
+                            <button type="submit" class="btn btn-primary">Book Appointment</button>
+                        </form>
                     </div>
                 </div>
             </div>

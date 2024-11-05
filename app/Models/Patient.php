@@ -4,31 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Patient extends Model
 {
-    use HasFactory;
-    protected $table = 'patients';
+    use HasFactory, SoftDeletes;
+
     protected $fillable = [
-    'name',
-    'department_id',
-    'doctor_id',
-    'phone',
-    'gender',
-    'age',
-    'date_of_birth_ad',
-    'date_of_birth_bs',
-    'province_id',
-    'district_id',
-    'municipality_type_id',
-    'municipality_id',
-    'address',
-    'ward_no',
+        'name',
+        'gender',
+        'age',
+        'phone_number',
+        'address',
+        'email',
+        'medical_history',
     ];
 
-    public function appointment()
+    // Relationship with Appointments
+    public function appointments()
     {
         return $this->hasMany(Appointment::class);
     }
-
 }

@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use App\DataTables\SchedulesDataTable;
-use App\Models\Schedule;
+use App\Models\DoctorSchedule;
 use App\Http\Requests\ScheduleRequest;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Models\Doctor;
 use App\Models\Department;
+use App\Models\Appointment;
 
 class ScheduleController extends Controller
 {
@@ -33,12 +34,12 @@ class ScheduleController extends Controller
         return $this->saveSchedules($request);
     }
 
-    public function show(Schedule $schedule)
+    public function show(DoctorSchedule $schedule)
     {
         return view('schedules.view', compact('schedule'));
     }
 
-    public function edit(Schedule $schedule)
+    public function edit(DoctorSchedule $schedule)
     {
         // Format start_time and end_time to ensure consistency (H:i:s)
         $schedule->start_time = date('H:i:s', strtotime($schedule->start_time));
@@ -53,11 +54,11 @@ class ScheduleController extends Controller
     }
 
 
-    public function update(ScheduleRequest $request, Schedule $schedule)
+    public function update(ScheduleRequest $request, DoctorSchedule $schedule)
     {
         DB::beginTransaction();
         try {
-            Schedule::where('id', $schedule->id)
+            DoctorSchedule::where('id', $schedule->id)
                 ->delete();
             // Save new schedules
             $this->saveSchedules($request);
@@ -75,7 +76,7 @@ class ScheduleController extends Controller
     {
         DB::beginTransaction();
         try {
-            Schedule::where('id', $id)->delete();
+            DoctorSchedule::where('id', $id)->delete();
             DB::commit();
             return redirect()->route('schedules.index')->with('success', 'Schedule deleted successfully.');
         } catch (\Exception $e) {
@@ -114,7 +115,7 @@ class ScheduleController extends Controller
     public function bulkUpdate(ScheduleRequest $request, $doctorId)
     {
 
-        Schedule::where('doctor_id', $doctorId)->delete();
+        DoctorSchedule::where('doctor_id', $doctorId)->delete();
        // Save new schedules
        $this->saveSchedules($request);
         return redirect()->route('schedules.index')->with('success', 'Schedules updated successfully!');
@@ -123,7 +124,7 @@ class ScheduleController extends Controller
     {
         DB::beginTransaction();
         try {
-            Schedule::where('doctor_id', $doctorId)->delete();
+            DoctorSchedule::where('doctor_id', $doctorId)->delete();
             DB::commit();
             return redirect()->route('schedules.index')->with('success', 'Schedule deleted successfully.');
         } catch (\Exception $e) {
@@ -155,7 +156,7 @@ class ScheduleController extends Controller
             }
 
             // Create all schedules
-            Schedule::insert($scheduleDataArray);
+            DoctorSchedule::insert($scheduleDataArray);
 
             DB::commit();
             return redirect()->route('schedules.index')->with('success', 'Schedule saved successfully.');
@@ -178,4 +179,5 @@ class ScheduleController extends Controller
             (object)['id' => 7, 'name' => 'Saturday'],
         ];
     }
+
 }

@@ -21,6 +21,7 @@ class User extends Authenticatable
         'email',
         'password',
         'doctor_id',
+        'patient_id',
     ];
 
     /**
@@ -49,6 +50,9 @@ class User extends Authenticatable
         public function doctor()
     {
         return $this->belongsTo(Doctor::class);
+    }
+    public function patient() {
+        return $this->belongsTo(Patient::class);
     }
 
 }

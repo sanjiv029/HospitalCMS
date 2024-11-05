@@ -1,5 +1,5 @@
 
-<section class="steps-section block bg-primary d-none d-lg-block py-5 fade-in">
+<section class="steps-section block bg-info d-none d-lg-block py-5 fade-in mt-0">
         <div class="container-fluid"> <!-- Changed to container-fluid for a wider layout -->
             <!-- Section Heading -->
             <div class="row mb-3">
@@ -7,7 +7,7 @@
                     <h4 class="text-light mb-2">
                         Access healthcare services anytime from anywhere with us
                         <br>
-                        Follow these simple four steps
+                        Follow these simple five steps
                     </h4>
                 </div>
             </div>

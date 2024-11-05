@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Schedule;
+use App\Models\DoctorSchedule;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -45,7 +45,7 @@ class SchedulesDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(Schedule $model): QueryBuilder
+    public function query(DoctorSchedule $model): QueryBuilder
     {
         return $model->newQuery()
             ->select('id', 'doctor_id',  'day_of_week', 'start_time', 'end_time')

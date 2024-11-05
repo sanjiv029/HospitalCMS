@@ -80,10 +80,11 @@ class DoctorController extends Controller
     public function checkType($data, $no = null, $model = null)
     {
         if (isset($data['profile_image'])) {
-            // Handle the uploaded file
+            Log::info('Profile image upload initiated.');
             $fileName = date('YmdHi') . $data['profile_image']->getClientOriginalName();
             $data['profile_image']->storeAs('/DoctorImages', $fileName, 'public');
             $data['profile_image'] = '/storage/DoctorImages/' . $fileName;
+            Log::info('Profile image saved as: ' . $data['profile_image']);
         }
 
         // If the function is called with a second argument to handle deletion
@@ -113,83 +114,6 @@ class DoctorController extends Controller
     {
         $experienceData = $this->prepareExperienceData($request, $doctorId);
         Experience::insert($experienceData);
-    }
-
-    private function prepareEducationData(EducationRequest $request, $doctorId)
-    {
-        $educationData = [];
-        $degrees = $request->input('degree', []);
-        $startYears = $request->input('start_year', []);
-        $endYears = $request->input('end_year', []);
-        $startYearsBS = $request->input('start_year_bs', []);
-        $endYearsBS = $request->input('end_year_bs', []);
-        $certificatesArray = $request->file('edu_certificates', []); // Get the file uploads
-
-        foreach ($degrees as $index => $degree) {
-            $certificates = [];
-
-            // Check if there is a file for the current index
-            if (isset($certificatesArray[$index])) {
-                $file = $certificatesArray[$index]; // Get the file for this index
-                $fileName = date('YmdHi') . '_' . $file->getClientOriginalName();
-                $path = $file->storeAs('Education', $fileName, 'public');
-                $certificates[] = '/storage/Education/' . $fileName;
-            }
-
-            $educationData[] = [
-                'doctor_id' => $doctorId,
-                'degree' => $degree,
-                'institution' => $request->input('institution')[$index] ?? null,
-                'address' => $request->input('address')[$index] ?? null,
-                'field_of_study' => $request->input('field_of_study')[$index] ?? null,
-                'start_year' => $startYears[$index] ?? null,
-                'end_year' => !empty($endYears[$index]) ? $endYears[$index] : null,
-                'start_year_bs' => $startYearsBS[$index] ?? null,
-                'end_year_bs' => $endYearsBS[$index] ?? null,
-                'edu_certificates' => $certificates ? implode(',', $certificates) : null,
-                'additional_information' => $request->input('additional_information')[$index] ?? null,
-            ];
-        }
-
-        return $educationData;
-    }
-    private function prepareExperienceData(ExperienceRequest $request, $doctorId)
-    {
-        $experienceData = [];
-        $employmentTypes = $request->input('type_of_employment', []);
-        $startDates = $request->input('start_date', []);
-        $endDates = $request->input('end_date', []);
-        $startDatesBS = $request->input('start_date_bs', []);
-        $endDatesBS = $request->input('end_date_bs', []);
-        $certificatesArray = $request->file('exp_certificates', []); // Get the file uploads
-
-        foreach ($employmentTypes as $index => $type) {
-            $certificates = [];
-
-            // Check if there is a file for the current index
-            if (isset($certificatesArray[$index])) {
-                $file = $certificatesArray[$index]; // Get the file for this index
-                $fileName = date('YmdHi') . '_' . $file->getClientOriginalName();
-                $path = $file->storeAs('Experience', $fileName, 'public');
-                $certificates[] = '/storage/Experience/' . $fileName; // Add the certificate path
-            }
-
-            $experienceData[] = [
-                'doctor_id' => $doctorId,
-                'type_of_employment' => $type,
-                'job_title' => $request->input('job_title')[$index] ?? null,
-                'healthcare_facilities' => $request->input('healthcare_facilities')[$index] ?? null,
-                'location' => $request->input('location')[$index] ?? null,
-                'start_date' => $startDates[$index] ?? null,
-                'end_date' => !empty($endDates[$index]) ? $endDates[$index] : null,
-                'start_date_bs' => $startDatesBS[$index] ?? null,
-                'end_date_bs' => $endDatesBS[$index] ?? null,
-                'exp_certificates' => $certificates ? implode(',', $certificates) : null,
-                'additional_details' => $request->input('additional_details')[$index] ?? null,
-            ];
-        }
-
-        return $experienceData;
     }
 
 
@@ -222,12 +146,9 @@ class DoctorController extends Controller
                 ]);
             }
 
-            // Update education and experience
-            Education::where('doctor_id', $doctor->id)->delete();
-            Experience::where('doctor_id', $doctor->id)->delete();
-
-            $this->storeEducation($educationRequest, $doctor->id);
-            $this->storeExperience($experienceRequest, $doctor->id);
+           // Update education and experience
+           $this->updateEducation($educationRequest, $doctor->id);
+           $this->updateExperience($experienceRequest, $doctor->id);
 
             DB::commit();
             return redirect()->route('doctors.index')->with('success', 'Doctor updated successfully.');
@@ -238,6 +159,121 @@ class DoctorController extends Controller
             return redirect()->route('doctors.index')->with('error', 'Error updating doctor and user.');
         }
     }
+
+    private function updateEducation(EducationRequest $request, $doctorId)
+    {
+        $educationData = $this->prepareEducationData($request, $doctorId);
+        foreach ($educationData as $data) {
+            // Update or create education record
+            Education::updateOrCreate(
+                ['doctor_id' => $doctorId, 'degree' => $data['degree'], 'institution' => $data['institution']],
+                $data
+            );
+        }
+    }
+
+    private function updateExperience(ExperienceRequest $request, $doctorId)
+    {
+        $experienceData = $this->prepareExperienceData($request, $doctorId);
+        foreach ($experienceData as $data) {
+            // Ensure that necessary keys are present before updating or creating
+            if (isset($data['job_title'], $data['healthcare_facilities'])) {
+                Experience::updateOrCreate(
+                    ['doctor_id' => $doctorId, 'job_title' => $data['job_title'], 'healthcare_facilities' => $data['healthcare_facilities']],
+                    $data
+                );
+            }
+        }
+    }
+
+    private function prepareEducationData(EducationRequest $request, $doctorId)
+    {
+        $educationData = [];
+        $degrees = $request->input('degree', []);
+        $certificatesArray = $request->file('edu_certificates', []);
+
+        // Retrieve existing education data
+        $existingEducationData = Education::where('doctor_id', $doctorId)->get();
+
+        foreach ($degrees as $index => $degree) {
+            // Check for existing certificate path
+            $existingPath = $existingEducationData[$index]->edu_certificates ?? null;
+
+            // Handle certificate upload or preserve existing path
+            $certificatesPath = $this->handleCertificateUpload($certificatesArray[$index] ?? null, $existingPath, 'Education');
+
+            $educationData[] = [
+                'doctor_id' => $doctorId,
+                'degree' => $degree,
+                'institution' => $request->input('institution')[$index] ?? null,
+                'edu_certificates' => $certificatesPath,
+            ];
+        }
+
+        return $educationData;
+    }
+
+    private function prepareExperienceData(ExperienceRequest $request, $doctorId)
+    {
+        $experienceData = [];
+        $employmentTypes = $request->input('type_of_employment', []);
+        $jobTitles = $request->input('job_title', []);
+        $healthcareFacilities = $request->input('healthcare_facilities', []);
+        $certificatesArray = $request->file('exp_certificates', []);
+
+        // Retrieve existing experience data
+        $existingExperienceData = Experience::where('doctor_id', $doctorId)->get();
+
+        foreach ($employmentTypes as $index => $type) {
+            // Prepare a new data entry with checks for necessary keys
+            $data = [
+                'doctor_id' => $doctorId,
+                'type_of_employment' => $type,
+                'job_title' => $jobTitles[$index] ?? null,
+                'healthcare_facilities' => $healthcareFacilities[$index] ?? null,
+                'exp_certificates' => null, // Will be set later
+            ];
+
+            // Check for existing certificate path
+            $existingPath = $existingExperienceData[$index]->exp_certificates ?? null;
+
+            // Handle certificate upload or preserve existing path
+            $data['exp_certificates'] = $this->handleCertificateUpload($certificatesArray[$index] ?? null, $existingPath, 'Experience');
+
+            $experienceData[] = $data;
+        }
+
+        return $experienceData;
+    }
+
+    private function handleCertificateUpload($file, $modelPath = null, $folder = 'Education')
+    {
+        // Log the upload initiation
+        Log::info("Certificate upload initiated for folder: $folder.");
+
+        // If a file is provided, process the upload
+        if ($file instanceof \Illuminate\Http\UploadedFile) {
+            $fileName = date('YmdHi') . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs("/$folder", $fileName, 'public');
+            $storedPath = '/storage/' . $folder . '/' . $fileName;
+            Log::info("Certificate saved as: $storedPath");
+
+            // Handle deletion of the previous file if a model path is provided
+            if ($modelPath) {
+                $trimmedPath = trim(str_replace("/storage/", "", $modelPath));
+                if (Storage::disk('public')->exists($trimmedPath)) {
+                    Storage::disk('public')->delete($trimmedPath);
+                    Log::info("Deleted old certificate: $trimmedPath");
+                }
+            }
+
+            return $storedPath;
+        }
+
+        // If no file is provided, return the existing path
+        return $modelPath;
+    }
+
 
     /**
      * Remove a doctor record.
